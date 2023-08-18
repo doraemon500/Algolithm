@@ -1,0 +1,102 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/67257
+
+import java.util.*;
+class Solution {
+    long max = Long.MIN_VALUE;
+    public long solution(String expression) {
+        StringBuilder sb = new StringBuilder();
+        Set<Character> set = new HashSet<>();
+        Set<String> check = new HashSet<>();
+        for(char ch : expression.toCharArray()) {
+            if(ch < '0' || ch > '9') 
+                set.add(ch);
+        }
+
+        char[] ord = new char[set.size()];
+        int[] arr = new int[set.size()];
+        int idx = 0;
+        for(char ch : set)
+            ord[idx++] = ch;
+
+        for(int i = 0; i < ord.length; i++) {
+            dfs(i, arr, String.valueOf(ord[i]), ord, check, expression);
+            arr[i] = 0;
+        }
+        return max;
+    }
+
+    void dfs(int n, int[] com , String str, char[] arr, Set<String> set, String expression) {
+        if(set.contains(str) || str.length() > arr.length || com[n] == 1)
+            return;
+        if(str.length() == arr.length) {
+            set.add(str);
+            cal(str, new String(expression));
+            return;
+        }
+        com[n] = 1;
+        for(int i = 0; i < arr.length; i++) {
+            if(com[i] == 1) continue;
+            dfs(i , com ,str + arr[i], arr, set, expression);
+            com[i] = 0;
+        }
+        return;
+    }
+
+    void cal(String ord, String seq) {
+        Loop:
+        for(int i = 0; i < ord.length(); i++) {
+            StringBuilder sb = new StringBuilder();
+            for(int k = 0; k < seq.length(); k++){
+                char ch = seq.charAt(k);
+                if(ch >= '0' && ch <= '9') {
+                    sb.append(ch);
+                    continue;
+                } else if((ch < '0' || ch > '9') && sb.toString().equals("")) {
+                    sb.append(ch);
+                    continue;
+                }
+                if(ord.charAt(i) == ch) {
+                    long pre = Long.parseLong(sb.toString());
+                    sb.delete( 0, sb.length());
+                    for(int l = k + 1; l < seq.length(); l++) {
+                        char ch2 = seq.charAt(l);
+                        if((ch2 < '0' || ch2 > '9') && sb.toString().equals("")) {
+                            sb.append(ch2);
+                            continue;
+                        } else if(ch2 < '0' || ch2 > '9' )
+                                break;
+                        sb.append(ch2);
+                    }
+                    long nxt = Long.parseLong(sb.toString());
+                    sb.delete( 0, sb.length());
+                    long rst = 0;
+                    switch(ch){
+                        case '+':
+                            rst = pre + nxt;
+                            break;
+                        case '-':
+                            rst = pre - nxt;
+                            break;
+                        case '*':
+                            rst = pre * nxt;
+                            break;
+                    }
+                    sb.append(pre);
+                    sb.append(ch);
+                    sb.append(nxt);
+                    String val = sb.toString();
+                    String val2 = String.valueOf(rst);
+                    seq = seq.replace(val, val2);
+                    k -= String.valueOf(pre).length() + 1 ;
+                }
+                sb.delete( 0, sb.length());
+            }
+        }
+
+
+        long ans = Long.parseLong(seq);
+        if(ans < 0)
+            ans *= -1;
+        max = Math.max(max, ans);
+    }
+}
