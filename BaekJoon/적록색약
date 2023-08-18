@@ -1,0 +1,79 @@
+https://www.acmicpc.net/problem/10026
+
+import java.util.Scanner;
+
+public class Main {
+    static int N, cnt = 0, val = 0;
+    static char arr[][];
+    static char arr2[][];
+
+    public static void main(String[] args) {
+        String s;
+
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+        N = n;
+        scanner.nextLine();
+        arr = new char[n][n];
+        arr2 = new char[n][n];
+
+        for (int i = 0; i < n; i++) {
+            s = scanner.nextLine();
+            for (int k = 0; k < s.length(); k++) {
+                char c = s.charAt(k);
+                arr[i][k] = c;
+                arr2[i][k] = c;
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            for (int k = 0; k < n; k++) {
+                if ('A' < arr[i][k] && arr[i][k] < 'Z')
+                    cnt++;
+                dfs(i, k, arr[i][k]);
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            for (int k = 0; k < n; k++) {
+                if ('A' < arr2[i][k] && arr2[i][k] < 'Z')
+                    val++;
+                dfs2(i, k, arr2[i][k]);
+            }
+        }
+
+        System.out.println(cnt + " " + val);
+
+    }
+
+    public static void dfs(int x, int y, char c) {
+        if (x < 0 || x >= N || y < 0 || y >= N) return;
+        else if (!('A' < arr[x][y] && arr[x][y] < 'Z'))
+            return;
+        else if (c != arr[x][y])
+            return;
+        else {
+            arr[x][y] += 32;
+            dfs(x - 1, y, (char) (arr[x][y] - 32));
+            dfs(x, y - 1, (char) (arr[x][y] - 32));
+            dfs(x + 1, y, (char) (arr[x][y] - 32));
+            dfs(x, y + 1, (char) (arr[x][y] - 32));
+        }
+        return;
+    }
+
+    public static void dfs2(int x, int y, char c) {
+        if (x < 0 || x >= N || y < 0 || y >= N) return;
+        else if (!('A' < arr2[x][y] && arr2[x][y] < 'Z'))
+            return;
+        else if (c != arr2[x][y] && !((c == 'G' && arr2[x][y] == 'R') || (c == 'R' && arr2[x][y] == 'G')))
+            return;
+        else {
+            arr2[x][y] += 32;
+            dfs2(x - 1, y, (char) (arr2[x][y] - 32));
+            dfs2(x, y - 1, (char) (arr2[x][y] - 32));
+            dfs2(x + 1, y, (char) (arr2[x][y] - 32));
+            dfs2(x, y + 1, (char) (arr2[x][y] - 32));
+        }
+        return;
+    }
+}
