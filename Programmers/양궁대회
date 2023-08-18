@@ -1,0 +1,84 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/92342
+
+
+import java.util.*;
+
+class Solution {
+
+    public static int[] answer;
+    public static int max, val, rst;
+    public static int[] info, ex;
+    public static int fnl; 
+
+
+    public int[] solution(int n, int[] info) {
+        int[] arr;
+        int max = 0;
+
+        this.info = info.clone();
+        arr = new int[info.length];
+        answer = new int[info.length];
+        ex = new int[]{0,0,0,0,0,0,0,0,0,0,0};
+
+        dfs(0, arr.clone(), n, 1);
+        dfs(0, arr.clone(), n, 0);
+
+        String str = Arrays.toString(answer);
+        String str2 = Arrays.toString(ex);
+        if(str.equals(str2) || fnl == 0)
+            answer = new int[]{-1};
+
+        return answer;
+    }
+
+
+     public static void dfs(int x, int[] arr, int num, int check) {
+        if(x == 10 || arr[x] >= info[x] + 1 ||  num <= 0)
+        {
+            for(int i = 0; i < num ; i++)
+                arr[10]++;
+
+            val = 0;
+            rst = 0;
+
+            for (int q = 0; q < 11; q++) {
+                if (arr[q] > info[q])
+                    val += 10 - q;
+                else if (arr[q] < info[q])
+                    rst += 10 - q;
+                else if (arr[q] == info[q] && arr[q] != 0)
+                    rst += 10 - q;
+            }
+
+
+            if (max > rst - val) {
+                max = rst - val;
+                answer = arr.clone();
+            } else if (max == rst - val) {
+                 for(int k = 10; k >= 0; k--) {
+                    if(answer[k] != arr[k]) {
+                        if (answer[k] < arr[k]) {
+                            answer = arr.clone();
+                            break;
+                        }else break;
+                    }
+                    fnl = max;
+                }
+            }
+            return;
+        }
+        else if(check == 0)
+        {
+            dfs(x + 1, arr.clone(), num, 0);
+            dfs(x + 1, arr.clone(), num, 1);
+            return;
+        }
+
+        arr[x]++;
+        dfs(x + 1, arr.clone(), num - 1, 0);
+        dfs(x + 1, arr.clone(), num - 1, 1);
+        dfs(x , arr.clone(), num - 1, 1);
+        return;
+
+    }
+}
