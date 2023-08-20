@@ -1,0 +1,49 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/150368
+
+import java.util.*;
+class Solution {
+    int[] ans = {0 ,0};
+    public int[] solution(int[][] users, int[] emoticons) {
+        int[] discount = {10,20,30,40};
+        int[] user = new int[users.length];
+        dfs(0, user, users, emoticons, discount);
+
+        return ans;
+    }
+
+    void dfs(int n, int[] user, int[][] users, int[] emo, int[] dis) {
+        if(n >= emo.length) {
+            int sum = 0;
+            int cnt = 0;
+            for(int i = 0; i < users.length; i++) {
+                if(users[i][1] <= user[i]) {
+                    cnt += 1;
+                    continue;
+                }
+                sum += user[i];
+            }
+
+            if(ans[0] < cnt) {
+                ans[0] = cnt;
+                ans[1] = sum;
+            } else if(ans[0] == cnt) 
+                if(ans[1] < sum) 
+                    ans[1] = sum;
+            return;
+        }
+
+        for(int i : dis) {
+            for(int k = 0; k < user.length; k++) {
+                if(users[k][0] > i)
+                    continue;
+                user[k] += emo[n] * (100 - i) / 100;
+            }
+            dfs(n + 1, user, users, emo, dis);
+            for(int k = 0; k < user.length; k++) {
+                if(users[k][0] > i)
+                    continue;
+                user[k] -= emo[n] * (100 - i) / 100;
+            }
+        }
+    }
+}
