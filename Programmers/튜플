@@ -6,7 +6,7 @@ class Solution {
     public int[] solution(String s) {
         HashSet<Integer> set = new HashSet<>();
         String str = s.substring(2, s.length() - 2);
-        String[] arr = str.replace("},{", ";").split(";");
+        String[] arr = str.split("\\}\\,\\{");
         
         Arrays.sort(arr, new Comparator<String>() {
             @Override 
@@ -18,7 +18,6 @@ class Solution {
         int idx = 0;
         Loof:
         for(String a : arr) {
-            if(a.equals("")) continue;
             StringBuilder sb = new StringBuilder();
             int num = 0;
             Loop:
@@ -27,11 +26,8 @@ class Solution {
                 if(ch >= '0' && ch <= '9')
                     sb.append(ch);
                 else {
-                    if(sb.length() != 0) {
-                        num = Integer.parseInt(sb.toString());
-                        sb.delete(0, sb.length());
-                    }else if(sb.length() == 0)
-                        continue;
+                    num = Integer.parseInt(sb.toString());
+                    sb.delete(0, sb.length()); 
                     if(set.contains(num))    
                         continue Loop;
                     ans[idx++] = num;
@@ -39,10 +35,7 @@ class Solution {
                     continue Loof;
                 }  
             }
-            if(sb.length() != 0)
-                num = Integer.parseInt(sb.toString());
-            else if(sb.length() == 0)
-                continue;
+            num = Integer.parseInt(sb.toString());
             if(set.contains(num))    
                 continue Loof;
             ans[idx++] = num;
