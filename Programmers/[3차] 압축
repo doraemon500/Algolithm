@@ -1,0 +1,45 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/17684
+
+import java.util.*;
+class Solution {
+    public int[] solution(String msg) {
+        HashMap<String, Integer> map = new HashMap<>();
+        Queue<Integer> q = new LinkedList<>();
+        StringBuilder sb = new StringBuilder();
+        for(int i = 'A'; i <= 'Z'; i++) {
+            sb.append((char)i);
+            map.put(sb.toString(), i - 'A' + 1);
+            sb.delete(0, sb.length());
+        }
+
+        int idx = 0, cnt = 27;
+        char[] arr = msg.toCharArray();
+        for(char ch : msg.toCharArray()) {
+            sb.append(ch);
+            if(idx + 1 >= arr.length) {
+                q.add(map.get(sb.toString()));
+                break;
+            }
+            if(map.containsKey(sb.toString())) {
+                sb.append(arr[idx + 1]);
+                if(map.containsKey(sb.toString())) {
+                    sb.delete(sb.length() - 1, sb.length());
+                    idx += 1;
+                    continue;
+                } 
+                map.put(sb.toString(), cnt++);
+                sb.delete(sb.length() - 1, sb.length());
+                q.add(map.get(sb.toString()));
+                sb.delete(0, sb.length());
+                idx += 1;
+                continue;
+            }
+            idx += 1;
+        }
+        int[] answer = new int[q.size()];
+        int n = 0;
+        while(!q.isEmpty())
+            answer[n++] = q.poll();
+        return answer;
+    }
+}
