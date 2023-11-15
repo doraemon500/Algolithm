@@ -1,0 +1,48 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/118666
+
+
+import java.util.*;
+class Solution {
+    public String solution(String[] survey, int[] choices) {
+        String answer = "";
+        
+        HashMap<Character, Integer> hash = new HashMap<>();
+        char[] arr = new char[]{'R', 'T', 'C', 'F', 'J', 'M', 'A', 'N'};
+        String[] sarr = new String[]{"RT", "CF", "JM", "AN"};
+        for(char c : arr) 
+            hash.put(c, 0);
+        
+        for(int i = 0; i < survey.length; i++) {
+            String str = survey[i];
+            char a = str.charAt(0);
+            char b = str.charAt(1);
+            char key = a;
+       
+            int val = choices[i];
+            if(val > 4) {
+                val -= 4;
+                key = b;
+            } else if(val == 4)
+                val = 0;
+            else if(val < 4) {
+                if(val == 1)
+                    val += 2;
+                else if(val == 3)
+                    val -= 2;
+            }
+            hash.put(key, hash.getOrDefault(key, 0) + val); 
+         }
+          
+        for(String str : sarr) {
+            int a = hash.get(str.charAt(0));
+            int b = hash.get(str.charAt(1));
+            
+            if(a >= b) 
+                answer += str.charAt(0);
+            else 
+                answer += str.charAt(1);
+        }
+        
+        return answer;
+    }
+}
