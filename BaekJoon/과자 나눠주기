@@ -45,3 +45,56 @@ public class Main {
         br.close();
     }
 }
+
+
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static StringTokenizer st;
+    static long max = 0;
+    static long min = Long.MAX_VALUE;
+    static int v, n, m, k;
+
+    public static void main(String[] args) throws IOException {
+        st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
+        v = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken());
+        int[] arr = new int[n];
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < n; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+        Arrays.sort(arr);
+
+        int left = 0;
+        int right = arr[arr.length - 1] + 1;
+
+        loop:
+        while (left < right) {
+            int mid = (left + right) / 2;
+            int cnt = 0;
+            for (int l : arr) {
+                try{
+                    cnt += l / mid;
+                }catch(Exception e){
+                    left = 1;
+                    break loop;
+                }
+            }
+            if (cnt < v) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        sb.append(left - 1);
+        bw.write(sb.toString());
+        bw.close();
+        br.close();
+    }
+}
