@@ -1,0 +1,60 @@
+https://www.acmicpc.net/problem/2467ㅎ
+
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static StringTokenizer st;
+    //    static List<Character> vowels = Arrays.asList('a', 'e', 'i', 'o', 'u');
+    static long max = 0;
+    static long min = Long.MAX_VALUE;
+    static long v, n, m, k;
+
+    public static void main(String[] args) throws IOException {
+        st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
+//        System.out.println(Integer.MAX_VALUE);
+        v = Long.parseLong(st.nextToken());
+        long[] arr = new long[(int) v];
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < v; i++) {
+            arr[i] = Long.parseLong(st.nextToken());
+        }
+
+
+//        Arrays.sort(arr);
+
+
+
+        int left = 0;
+        int right = arr.length - 1;
+        long min = Long.MAX_VALUE;
+        int a = -1, b = -1;
+
+        while(left < right) {
+            long val = arr[left] + arr[right];
+            long val2 = Math.abs(val);
+
+            if (val2 < min) {
+                min = val2;
+                a = left;
+                b = right;
+            }
+            if (val < 0) {
+                left++;
+            } else if (val >= 0){
+                right--;
+            }
+        }
+
+        long[] ans = new long[2];
+        ans[0] = arr[a];
+        ans[1] = arr[b];
+//        Arrays.sort(ans);
+        sb.append(ans[0]).append(" ").append(ans[1]);
+        bw.write(sb.toString());
+        bw.close();
+        br.close();
+    }
