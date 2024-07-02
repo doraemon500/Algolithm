@@ -1,0 +1,79 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/159993
+
+import java.util.*;
+
+class Solution {
+    public int solution(String[] maps) {
+        int answer = -1;
+        int[] start = new int[4];
+        char[][] arr = new char[maps.length][maps[0].length()];
+        char[][] arr2 = new char[maps.length][maps[0].length()];
+        Queue<int[]> q = new LinkedList<>();
+        int idx = 0;
+        for(String s : maps) {
+            int idx2 = 0;
+            for (char ch : s.toCharArray()) {
+                if (ch == 'S') {
+                    start[0] = idx;
+                    start[1] = idx2;
+                }
+                arr[idx][idx2] = ch;
+                arr2[idx][idx2] = ch;
+                idx2++;
+            }
+            idx++;
+        }
+
+        int min = Integer.MAX_VALUE;
+        int[] mid = new int[4];
+        Arrays.fill(mid  , -1);
+        q.add(start);
+        // int sgn = -1;
+        // arr[start[0]][start[1]] = 'X';
+        while(!q.isEmpty()){
+            int[] val = q.poll();
+            if (val[0] < 0 || val[1] < 0 || val[0] >= arr.length || val[1] >= arr[0].length)
+                continue;
+            if (arr[val[0]][val[1]] == 'X') continue;
+            if (arr[val[0]][val[1]] == 'L' && val[2] == 0) {
+                val[2] = 1;
+                mid = val;
+                break;
+            }
+            // if (arr[val[0]][val[1]] == 'E') {
+            //     sgn = 0;
+            // }
+
+            // if (sgn == -1)
+            arr[val[0]][val[1]] = 'X';
+            q.add(new int[]{val[0] - 1, val[1], val[2], val[3] + 1});
+            q.add(new int[]{val[0] + 1, val[1], val[2], val[3] + 1});
+            q.add(new int[]{val[0], val[1] - 1, val[2], val[3] + 1});
+            q.add(new int[]{val[0], val[1] + 1, val[2], val[3] + 1});
+        }
+        if (mid[0] == -1)
+            return -1;
+
+        q = new LinkedList<>();
+        q.add(mid);
+        while(!q.isEmpty()){
+            int[] val = q.poll();
+            if (val[0] < 0 || val[1] < 0 || val[0] >= arr.length || val[1] >= arr[0].length)
+                continue;
+            if (arr2[val[0]][val[1]] == 'X') continue;
+            if (arr2[val[0]][val[1]] == 'E' && val[2] == 1) {
+                min = val[3];
+                break;
+            }
+
+            arr2[val[0]][val[1]] = 'X';
+            q.add(new int[]{val[0] - 1, val[1], val[2], val[3] + 1});
+            q.add(new int[]{val[0] + 1, val[1], val[2], val[3] + 1});
+            q.add(new int[]{val[0], val[1] - 1, val[2], val[3] + 1});
+            q.add(new int[]{val[0], val[1] + 1, val[2], val[3] + 1});
+        }
+        if (min != Integer.MAX_VALUE)
+            answer = min;
+        return answer;
+    }
+}
