@@ -1,0 +1,80 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/1835
+
+import java.util.*;
+
+class Solution {
+    char[] arr = {'A', 'C', 'F', 'J', 'M', 'N', 'R', 'T'};
+    int answer = 0;
+    HashSet<String> set = new HashSet<>();
+
+    public int solution(int n, String[] data) {
+        int[] visited = new int[arr.length];
+        char[] ans = new char[arr.length];
+
+        int idx = 0;
+        for (char c : arr) {
+            dfs(c, visited, ans, data, 0, idx);
+            visited[idx++] = 0;
+        }
+
+        return answer;
+    }
+
+    void dfs(char c, int[] visited, char[] ans, String[] data, int cnt, int index) {
+        if (cnt == ans.length) {
+            // System.out.println("hello");
+            // StringBuilder sb = new StringBuilder();
+            // for (char ch : ans)
+            //     sb.append(ch);
+            // if(set.contains(ans.toString())) return;
+            for (String str : data) {
+                char ch = str.charAt(0);
+                char ch2 = str.charAt(2);
+                int dis = str.charAt(str.length() - 1) - 48;
+                int rdis;
+
+                int chp = 0, ch2p = 0;
+                for (int i = 0; i < ans.length; i++) {
+                    if (ans[i] == ch) chp = i;
+                    if (ans[i] == ch2) ch2p = i;
+                }
+                rdis = Math.abs(chp - ch2p) - 1;
+
+                switch(str.charAt(3)) {
+                    case '=':
+                        if (dis != rdis)
+                            return;
+                        continue;
+                    case '<':
+                        if (rdis >= dis)
+                            return;
+                        continue;
+                    case '>':
+                        if (rdis <= dis)
+                            return;
+                        continue;
+                }
+            }
+            answer++;
+            // set.add(ans.toString());
+            return;
+        }
+
+        visited[index] = 1;
+        ans[cnt] = c;
+
+        int idx = 0;
+        for (char ch : arr) {
+            if (cnt + 1 == arr.length) {
+                dfs(ch, visited, ans, data, cnt + 1, idx);
+                break;
+            }
+            if (visited[idx] == 1){
+                idx++;
+                continue;
+            }
+            dfs(ch, visited, ans, data, cnt + 1, idx);
+            visited[idx++] = 0;
+        }
+    }
+}
