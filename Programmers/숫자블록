@@ -1,0 +1,31 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/12923
+
+import java.util.*;
+
+class Solution {
+    public int[] solution(long begin, long end) {
+        int[] answer = new int[(int)(end - begin + 1)];
+
+        Loop:
+        for (int i = 0; i < answer.length; i++) {
+            int k = 2;
+            int val = (int)(begin + i);
+            int max = 1;
+            // if (val > 10000000) val = 10000000;
+            while(true) {
+                if (Math.sqrt(val) < k) {
+                    break;
+                }
+                if (val % k == 0) {
+                    max = Math.max(max, k);
+                    if (val / k <= 10000000)
+                        max = Math.max(max, val / k);
+                }
+                k++;
+            }
+            answer[i] = max;
+        }
+        if (begin == 1) answer[0] = 0;
+        return answer;
+    }
+}
