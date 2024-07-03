@@ -1,0 +1,21 @@
+https://level.goorm.io/exam/49086/정사각형의-개수/quiz/1
+
+import java.io.*;
+import java.util.*;
+class Main {
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		String input = br.readLine();
+
+		long num = Long.parseLong(input);
+		long cnt = 0;
+		for (long i = 1; i <= num; i++)
+			cnt += i * i;
+		System.out.println(cnt);
+	}
+}
+
+// 1 1
+// 2 5
+// 3 14
+// 4 30

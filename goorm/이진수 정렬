@@ -1,0 +1,37 @@
+https://level.goorm.io/exam/195687/이진수-정렬/quiz/1
+
+import java.io.*;
+import java.util.*;
+class Main {
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		// String input = br.readLine();
+		int k = Integer.parseInt(st.nextToken());
+		int j = Integer.parseInt(st.nextToken());
+
+		Integer[] arr = new Integer[k];
+		st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < k; i++) {
+			arr[i] = Integer.parseInt(st.nextToken());
+		}
+
+		Arrays.sort(arr, (a, b) -> {
+			String ab = Integer.toBinaryString(a);
+			String bb = Integer.toBinaryString(b);
+
+			int cnt1 = 0, cnt2 = 0;
+			for (char ch : ab.toCharArray())
+				if (ch == '1') cnt1++;
+			for (char ch : bb.toCharArray())
+				if (ch == '1') cnt2++;
+
+			if (cnt1 == cnt2) return b - a;
+			// else if (cnt1 > cnt2) return cnt2 - cnt1;
+			return cnt2 - cnt1;
+			// else if (cnt1 < cnt2) return cnt1 - cnt2;
+			// return -1;
+		});
+		System.out.println(arr[j - 1]);
+	}
+}

@@ -1,0 +1,81 @@
+https://level.goorm.io/exam/174717/큰-수식-찾기/quiz/1
+
+import java.io.*;
+import java.util.*;
+class Main {
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		String input = br.readLine();
+		String[] arr = input.split(" ");
+
+		long max = Long.MIN_VALUE;
+		for (String str : arr) {
+			Queue<Long> q = new LinkedList<>();
+			Queue<Integer> q2 = new LinkedList<>();
+			char[] carr = str.toCharArray();
+			for (int i = 0; i < str.length(); i++) {
+					char ch = str.charAt(i);
+					if (ch < '0' || ch > '9') {
+						q.add((long)ch);
+						q2.add(i);
+					}
+			}
+
+			long[] units = new long[q.size()];
+			int size = q2.size();
+			for (int i = 0; i < size; i++) {
+				carr[(int)q2.poll()] = " ".charAt(0);
+				units[i] = q.poll();
+			}
+
+			String nums = "";
+			for (char ch : carr)
+				nums += ch;
+			String[] snums = nums.split(" ");
+
+			int cnt = 0, sign = 0;
+			int idx = 0, idx2 = 0;
+			Stack<Long> stack = new Stack<>();
+			while(true) {
+				if (idx == snums.length) break;
+				if (cnt % 2 == 0) {
+					stack.push(Long.parseLong(snums[idx++]));
+				}else {
+					long ch = units[idx2++];
+					if (ch == '*') sign = 1;
+					stack.push(ch);
+				}
+
+				if (sign == 1 && cnt % 2 == 0) {
+					long a = stack.pop();
+					stack.pop();
+					long b = stack.pop();
+					stack.push(a * b);
+					sign = 0;
+				}
+				cnt++;
+			}
+
+			Stack<Long> stack2 = new Stack<>();
+			while(!stack.isEmpty())
+				stack2.push(stack.pop());
+
+			while(!stack2.isEmpty()) {
+				if (stack2.size() == 1) {
+					max = Math.max(max, stack2.pop());
+					break;
+				}
+				long a = stack2.pop();
+				long ch = stack2.pop();
+				long b = stack2.pop();
+
+				if (ch == '+')
+					stack2.push(a + b);
+				else
+					stack2.push(a - b);
+			}
+		}
+
+		System.out.println(max);
+	}
+}

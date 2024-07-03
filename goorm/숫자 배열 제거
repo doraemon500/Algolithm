@@ -1,0 +1,23 @@
+https://level.goorm.io/exam/174805/숫자-제거-배열/quiz/1
+
+import java.io.*;
+import java.util.*;
+class Main {
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int a = Integer.parseInt(st.nextToken());
+		String b = st.nextToken();
+		// String[] arr = new String[a];
+
+		st = new StringTokenizer(br.readLine());
+		int cnt = 0;
+		for(int i = 0; i < a; i++) {
+			String str = st.nextToken();
+			if(!str.contains(b))
+					cnt++;
+		}
+		// String input = br.readLine();
+		System.out.println(cnt);
+	}
+}
