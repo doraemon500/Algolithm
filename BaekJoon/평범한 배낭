@@ -1,0 +1,46 @@
+https://www.acmicpc.net/problem/12865
+
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static StringTokenizer st;
+    //    static List<Character> vowels = Arrays.asList('a', 'e', 'i', 'o', 'u');
+    static long max = 0;
+    static long min = Long.MAX_VALUE;
+    static long v, n, m, k;
+    static StringBuilder sb;
+
+    public static void main(String[] args) throws IOException {
+        st = new StringTokenizer(br.readLine());
+        int v = Integer.parseInt(st.nextToken());
+        int n = Integer.parseInt(st.nextToken());
+
+        int[][] arr = new int[v][2];
+        for (int i = 0; i < v; i++) {
+            st = new StringTokenizer(br.readLine());
+            arr[i][0] = Integer.parseInt(st.nextToken());
+            arr[i][1] = Integer.parseInt(st.nextToken());
+        }
+
+        int[][] dp = new int[v + 1][n + 1];
+        for (int i = 1; i < v + 1; i++) {
+            for (int w = 1; w < n + 1; w++) {
+                int[] val = arr[i - 1];
+                if (val[0] > w) {
+                    dp[i][w] = dp[i - 1][w];
+                } else {
+                    dp[i][w] = Math.max(dp[i - 1][w], dp[i - 1][w - val[0]] + val[1]);
+                }
+            }
+        }
+
+        sb = new StringBuilder();
+        sb.append(dp[v][n]);
+        bw.write(sb.toString());
+        bw.close();
+        br.close();
+    }
+}
