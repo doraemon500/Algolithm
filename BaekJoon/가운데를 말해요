@@ -1,0 +1,54 @@
+https://www.acmicpc.net/problem/1655
+
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static StringTokenizer st;
+    //    static List<Character> vowels = Arrays.asList('a', 'e', 'i', 'o', 'u');
+    static long max = 0;
+    static long min = Long.MAX_VALUE;
+    static long v, n, m, k;
+    static StringBuilder sb;
+
+    public static void main(String[] args) throws IOException {
+//        st = new StringTokenizer(br.readLine());
+        int v = Integer.parseInt(br.readLine());
+        PriorityQueue<Integer> minpq = new PriorityQueue<>((a, b) -> a - b);
+        PriorityQueue<Integer> maxpq = new PriorityQueue<>((a, b) -> b - a);
+
+        sb = new StringBuilder();
+        for (int i = 0; i < v; i++) {
+            int num = Integer.parseInt(br.readLine());
+            if (minpq.size() == maxpq.size()) {
+                if (!minpq.isEmpty() && num > minpq.peek()) {
+                    int swapv = minpq.poll();
+                    maxpq.add(swapv);
+                    minpq.offer(num);
+                    sb.append(maxpq.peek()).append("\n");
+                    continue;
+                }
+                maxpq.offer(num);
+            } else if (maxpq.size() > minpq.size()) {
+                if (maxpq.peek() > num) {
+                    int swapv = maxpq.poll();
+                    minpq.offer(swapv);
+                    maxpq.offer(num);
+                    sb.append(maxpq.peek()).append("\n");
+                    continue;
+                }
+                minpq.offer(num);
+            }
+
+            sb.append(maxpq.peek()).append("\n");
+        }
+
+
+//        sb = new StringBuilder();
+        bw.write(sb.toString());
+        bw.close();
+        br.close();
+    }
+}
