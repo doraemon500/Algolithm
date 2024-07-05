@@ -1,0 +1,32 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/147354
+
+import java.util.*;
+
+class Solution {
+    public int solution(int[][] data, int col, int row_begin, int row_end) {
+        Arrays.sort(data , (a, b) -> {
+            if (a[col - 1] == b[col - 1])
+                return b[0] - a[0];
+            return a[col - 1] - b[col - 1];
+        });
+
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int i = row_begin - 1; i < row_end; i++) {
+            int S_i = 0;
+            for (int l : data[i]) {
+                S_i += l % (i + 1);
+            }
+            list.add(S_i);
+        }
+
+        int xor = -1;
+        for (int si : list) {
+            if (xor == -1) {
+                xor = si;
+                continue;
+            }
+            xor ^= si;
+        }
+        return xor;
+    }
+}
