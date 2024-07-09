@@ -1,0 +1,22 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/140107
+
+import java.util.*;
+
+class Solution {
+    public long solution(int k, int d) {
+        long answer = 0;
+        int len = d / k;
+
+        for (int i = 0 ; i <= len; i++) {
+            double i2 = Math.pow(i*k, 2);
+            double d2 = Math.pow(d, 2);
+            double l = Math.sqrt(d2 - i2);
+
+            int cnt = (int)l / k;
+            answer += cnt + 1;
+        }
+
+        return answer;
+    }
+}
+
