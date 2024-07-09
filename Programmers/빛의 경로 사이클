@@ -1,0 +1,222 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/86052
+// 콜 스택 초과와 시간 초과 발생
+
+import java.util.*;
+class Solution {
+    ArrayList<Integer> list = new ArrayList<>();
+
+    public int[] solution(String[] grid) {
+        char[][] arr = new char[grid.length][grid[0].length()];
+        int idx = 0;
+        for(String str : grid)
+            arr[idx++] = str.toCharArray();
+
+        HashSet<String> set = new HashSet<>();
+        for (int l = 0; l < arr.length; l++) {
+            for (int k = 0; k < arr[0].length; k++) {
+                char ch = arr[l][k];
+                for (int i = 0; i < 4; i++){
+                    char pos = 0;
+                    int a = l;
+                    int b = k;
+                    switch(i){
+                        case 0:
+                            try {
+                                pos = arr[l + 1][k];
+                                a = l + 1;
+                                b = k;
+                                break;
+                            } catch(Exception e) {
+                                pos = ch;
+                                if (l + 1 == arr.length) {
+                                    pos = arr[0][k];
+                                    a = 0;
+                                    b = k;
+                                }
+                                break;
+                            }
+                        case 2:
+                            try {
+                                pos = arr[l - 1][k];
+                                a = l - 1;
+                                b = k;
+                                break;
+                            } catch(Exception e) {
+                                pos = ch;
+                                if (l - 1 < 0) {
+                                    pos = arr[arr.length - 1][k];
+                                    a = arr.length - 1;
+                                    b = k;
+                                }
+                                break;
+                            }
+                        case 1:
+                            try {
+                                pos = arr[l][k + 1];
+                                a = l;
+                                b = k + 1;
+                                break;
+                            } catch (Exception e){
+                                pos = ch;
+                                if (k + 1 == arr[0].length) {
+                                    pos = arr[l][0];
+                                    a = l;
+                                    b = 0;
+                                }
+                                break;
+                            }
+                        case 3:
+                            try{
+                                pos = arr[l][k - 1];
+                                a = l;
+                                b = k - 1;
+                                break;
+                            } catch (Exception e) {
+                                pos = ch;
+                                if (k - 1 < 0) {
+                                    pos = arr[l][arr[0].length - 1];
+                                    a = l;
+                                    b = arr[0].length - 1;
+                                }
+                                break;
+                            }
+                    }
+                    String str = ch + " " + i + " " + l + " " + k;
+                    dfs(ch,  1, pos, i, i, a, b, arr, set, str);
+                }
+            }
+        }
+
+        ArrayList<Integer> list2 = new ArrayList<>();
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int n : list)
+            map.put(n, map.getOrDefault(n, 0) + 1);
+
+        Collections.sort(list);
+        int num = -1;
+        int finl = -1;
+        int cnt = 0;
+        for (int n : list) {
+            if (num != n) {
+                num = n;
+                cnt = 0;
+                int v = map.get(n);
+                int left = v % n;
+                int div = v / n;
+                finl = div + left;
+            }
+
+            if (cnt < finl) {
+                list2.add(n);
+                cnt++;
+            }
+        }
+        Integer[] answer = list2.toArray(new Integer[list2.size()]);
+        return  Arrays.stream(answer).mapToInt(Integer::intValue).toArray();
+    }
+
+    void dfs (char target, int cnt, char pos, int start, int dir, int l, int k, char[][] arr, HashSet<String> set, String ans){
+        int dir2 = -1;
+
+        switch(dir) {
+            case 0:
+                dir2 = 2;
+                break;
+            case 1:
+                dir2 = 3;
+                break;
+            case 2:
+                dir2 = 0;
+                break;
+            case 3:
+                dir2 = 1;
+                break;
+        }
+
+        switch(pos){
+            case 'S':
+                dir2 += 2;
+                if(dir2 > 3) dir2 -= 4;
+                break;
+            case 'L':
+                dir2 -= 1;
+                if(dir2 < 0) dir2 += 4;
+                break;
+            case 'R':
+                dir2 += 1;
+                if(dir2 > 3) dir2 -= 4;
+                break;
+        }
+
+
+        String str = pos + " " + dir2 + " " + l + " "  + k;
+        if (set.contains(str)){
+            return;
+        }
+        if (str.equals(ans)){
+            list.add(cnt);
+            return;
+        }
+
+
+        set.add(str);
+        int a = l;
+        int b = k;
+        switch(dir2){
+            case 0:
+                try {
+                    pos = arr[l + 1][k];
+                    a += 1;
+                    break;
+                } catch(Exception e) {
+                    if (l + 1 == arr.length) {
+                        pos = arr[0][k];
+                        a = 0;
+                        b = k;
+                    }
+                    break;
+                }
+            case 2:
+                try {
+                    pos = arr[l - 1][k];
+                    a -= 1;
+                    break;
+                } catch(Exception e) {
+                    if (l - 1 < 0) {
+                        pos = arr[arr.length - 1][k];
+                        a = arr.length - 1;
+                        b = k;
+                    }
+                    break;
+                }
+            case 1:
+                try {
+                    pos = arr[l][k + 1];
+                    b += 1;
+                    break;
+                } catch (Exception e){
+                    if (k + 1 == arr[0].length) {
+                        pos = arr[l][0];
+                        a = l;
+                        b = 0;
+                    }
+                    break;
+                }
+            case 3:
+                try{
+                    pos = arr[l][k - 1];
+                    b -= 1;
+                    break;
+                } catch (Exception e) {
+                    if (k - 1 < 0) {
+                        pos = arr[l][arr[0].length - 1];
+                        a = l;
+                        b = arr[0].length - 1;
+                    }
+                    break;
+                }
+        }
+        dfs(target , cnt + 1, pos, start, dir2, a, b, arr, set, ans);
+        set.remove(str);
+    }
+}
