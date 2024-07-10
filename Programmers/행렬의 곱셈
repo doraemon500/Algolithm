@@ -1,0 +1,21 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/12949
+
+import java.util.*;
+
+class Solution {
+    public int[][] solution(int[][] arr1, int[][] arr2) {
+        int[][] answer = new int[arr1.length][arr2[0].length];
+
+        for(int i = 0; i< arr1.length; i++) {
+            int[] val = arr1[i];
+            for (int k = 0; k<arr2[0].length; k++) {
+                int v = 0;
+                for (int l = 0; l < arr2.length; l++) {
+                    v += val[l] * arr2[l][k];
+                }
+                answer[i][k] = v;
+            }
+        }
+        return answer;
+    }
+}
