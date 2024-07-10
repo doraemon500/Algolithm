@@ -1,4 +1,141 @@
 https://school.programmers.co.kr/learn/courses/30/lessons/86052
+
+// 올바른 코드
+import java.util.*;
+class Solution {
+    ArrayList<Integer> list = new ArrayList<>();
+    boolean[][][] bool;
+    char[][] arr;
+
+    public int[] solution(String[] grid) {
+        arr = new char[grid.length][grid[0].length()];
+        int idx = 0;
+        for(String str : grid)
+            arr[idx++] = str.toCharArray();
+
+        bool = new boolean[arr.length][arr[0].length][4];
+        for (int l = 0; l < arr.length; l++) {
+            for (int k = 0; k < arr[0].length; k++) {
+                char ch = arr[l][k];
+                for (int i = 0; i < 4; i++){
+                    if (!bool[l][k][i]) {
+                        list.add(cycle(i, l, k, ch));
+                    }
+                }
+            }
+        }
+
+        Collections.sort(list);
+        Integer[] answer = list.toArray(new Integer[list.size()]);
+        return  Arrays.stream(answer).mapToInt(Integer::intValue).toArray();
+    }
+
+    int cycle(int dir, int l, int k, char pos) {
+        int cnt = 0;
+
+        while(true) {
+            if (bool[l][k][dir]) break;
+
+            bool[l][k][dir] = true;
+            cnt++;
+
+            int a = l;
+            int b = k;
+            switch(dir){
+                case 0:
+                    try {
+                        pos = arr[l + 1][k];
+                        a += 1;
+                        break;
+                    } catch(Exception e) {
+                        if (l + 1 == arr.length) {
+                            pos = arr[0][k];
+                            a = 0;
+                            b = k;
+                        }
+                        break;
+                    }
+                case 2:
+                    try {
+                        pos = arr[l - 1][k];
+                        a -= 1;
+                        break;
+                    } catch(Exception e) {
+                        if (l - 1 < 0) {
+                            pos = arr[arr.length - 1][k];
+                            a = arr.length - 1;
+                            b = k;
+                        }
+                        break;
+                    }
+                case 1:
+                    try {
+                        pos = arr[l][k + 1];
+                        b += 1;
+                        break;
+                    } catch (Exception e){
+                        if (k + 1 == arr[0].length) {
+                            pos = arr[l][0];
+                            a = l;
+                            b = 0;
+                        }
+                        break;
+                    }
+                case 3:
+                    try{
+                        pos = arr[l][k - 1];
+                        b -= 1;
+                        break;
+                    } catch (Exception e) {
+                        if (k - 1 < 0) {
+                            pos = arr[l][arr[0].length - 1];
+                            a = l;
+                            b = arr[0].length - 1;
+                        }
+                        break;
+                    }
+            }
+            l = a; k = b;
+
+            switch(dir) {
+                case 0:
+                    dir = 2;
+                    break;
+                case 1:
+                    dir = 3;
+                    break;
+                case 2:
+                    dir = 0;
+                    break;
+                case 3:
+                    dir = 1;
+                    break;
+            }
+
+            switch(pos){
+                case 'S':
+                    dir += 2;
+                    if(dir > 3) dir -= 4;
+                    break;
+                case 'L':
+                    dir -= 1;
+                    if(dir < 0) dir += 4;
+                    break;
+                case 'R':
+                    dir += 1;
+                    if(dir > 3) dir -= 4;
+                    break;
+            }
+        }
+
+        return cnt;
+    }
+}
+
+
+
+
+
 // 콜 스택 초과와 시간 초과 발생
 
 import java.util.*;
