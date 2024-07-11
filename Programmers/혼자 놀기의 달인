@@ -1,0 +1,125 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/131130
+
+import java.util.*;
+
+class Solution {
+    int max = Integer.MIN_VALUE;
+    int[] visited, ans;
+    HashMap<Integer, Integer> map = new HashMap<>();
+    public int solution(int[] cards) {
+        visited = new int[cards.length];
+        ans = cards;
+        visited[0] = 1;
+        check(ans[0], 1, 1, 1);
+
+        return max;
+    }
+
+    void check(int n, int group, int cnt, int visitcnt) {
+        if (visited[n - 1] == group) {
+            map.put(group, cnt);
+            if (visitcnt == visited.length) {
+                if (map.size() == 1 || group == 1) {
+                    max = Math.max(max, 0);
+                    return;
+                }
+                int[] val = new int[group];
+                for (int key = 1; key <= group; key ++){
+                    val[key - 1] = map.get(key);
+                }
+                Arrays.sort(val);
+                max = Math.max(max, val[val.length - 1] * val[val.length - 2]);
+                return;
+            }
+            cnt = 0;
+            group++;
+            for (int i = 0; i < visited.length; i++) {
+                if (visited[i] != 0) continue;
+                visited[i] = group;
+                check(ans[i], group, cnt + 1, visitcnt + 1);
+            }
+            return;
+        } else if (visited[n - 1] != group && visited[n - 1] != 0) return;
+
+        visited[n - 1] = group;
+        check(ans[n - 1], group, cnt + 1, visitcnt + 1);
+    }
+}
+
+
+// cards에서 이미 임의로 섞인 상태로 박스에 넣어진 상태로 들어옴.
+// 즉, 파라미터로 들어온 cards는 이미 박스 순서가 정해진 상태. 나는 문제를 박스와 카드의 순서 까지 모두 임의로 고르는 것까지 고려해서 풀어야한다고
+// 생각 잘못 이해해서 모든 경우 다 살펴봄.
+import java.util.*;
+
+class Solution {
+    int max = Integer.MIN_VALUE;
+    int[] visited, visited2, ans;
+    HashMap<Integer, Integer> map = new HashMap<>();
+    public int solution(int[] cards) {
+        visited = new int[cards.length];
+        visited2 = new int[cards.length];
+        ans = new int[cards.length];
+        for (int i = 0; i < cards.length ; i++) {
+            dfs(cards[i], i, cards, 0);
+            visited2[i] = 0;
+        }
+
+        return max;
+    }
+
+    void dfs(int n, int idx, int[] cards, int cnt) {
+        if (cnt == cards.length) {
+            for (int i = 0; i < cards.length; i++) {
+                visited[i] = 1;
+                check(ans[i], 1, 1, 1);
+                visited[i] = 0;
+            }
+            return;
+        }
+
+        visited2[idx] = 1;
+        ans[cnt] = n;
+        for (int i = 0; i < cards.length; i++) {
+            if (cnt + 1 == cards.length) {
+                dfs(cards[i], i, cards, cnt + 1);
+                break;
+            }
+            if (visited2[i] == 1) continue;
+            dfs(cards[i], i, cards, cnt + 1);
+            visited2[i] = 0;
+        }
+    }
+
+    void check(int n, int group, int cnt, int visitcnt) {
+        if (visited[n - 1] == group) {
+            map.put(group, cnt);
+            if (visitcnt == visited.length) {
+                if (map.size() == 1 || group == 1) {
+                    max = Math.max(max, 0);
+                    return;
+                }
+                int[] val = new int[group];
+                for (int key = 1; key <= group; key ++){
+                    val[key - 1] = map.get(key);
+                }
+                Arrays.sort(val);
+                max = Math.max(max, val[val.length - 1] * val[val.length - 2]);
+                return;
+            }
+            cnt = 0;
+            group++;
+            for (int i = 0; i < visited.length; i++) {
+                if (visited[i] != 0) continue;
+                visited[i] = group;
+                check(ans[i], group, cnt + 1, visitcnt + 1);
+                visited[i] = 0;
+            }
+            return;
+        } else if (visited[n - 1] != group && visited[n - 1] != 0) return;
+
+        visited[n - 1] = group;
+        check(ans[n - 1], group, cnt + 1, visitcnt + 1);
+        visited[n - 1] = 0;
+    }
+}
