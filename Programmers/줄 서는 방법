@@ -1,0 +1,58 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/12936
+
+// 효율성 실패(time excess)
+import java.util.*;
+class Solution {
+    ArrayList<Long> list = new ArrayList<>();
+    public int[] solution(int n, long ky) {
+        int[] visited = new int[n];
+        long[] valpocket = new long[n];
+        long v = 1;
+        for (int i = 1; i <= n; i++) {
+            v *= i;
+            valpocket[i - 1] = v;
+        }
+
+        Loop:
+        for (int i = n; i > 0; i--) {
+            long val = valpocket[i - 1];
+            long div = 0;
+            if (i != 1)
+                div = valpocket[i - 2];
+            long cnt = 0;
+            try{
+                cnt = val / div;
+            } catch(Exception e) {
+                for (long y = 1; y <= n; y++) {
+                    if (!list.contains(y)){
+                        list.add(y);
+                        break Loop;
+                    }
+                }
+            }
+            for (long c = 1; c <= cnt; c++) {
+                 if (ky <= c * div) {
+                     ky -= (c - 1) * div;
+                     int cnt2 = 0;
+                     for (long k = 1; k <= n; k++) {
+                        if (list.contains(k)) continue;
+                        else {
+                            cnt2++;
+                            if (cnt2 == c) {
+                                list.add(k);
+                                break;
+                            }
+                        }
+                      }
+                      break;
+                 }
+            }
+        }
+
+        int[] answer = new int[list.size()];
+        int idx = 0;
+        for (long num : list)
+            answer[idx++] = (int)num;
+        return answer;
+    }
+}
