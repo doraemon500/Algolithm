@@ -1,0 +1,27 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/12913
+
+import java.util.*;
+class Solution {
+    int answer = Integer.MIN_VALUE;
+    int solution(int[][] land) {
+        int[][] arr = new int[land.length][4];
+        for (int i = 0; i < 4; i++)
+            arr[0][i] = land[0][i];
+
+        for (int i = 1; i < land.length; i++) {
+            for (int k = 0; k < 4; k++) {
+                for (int l = 0; l < 4; l++) {
+                    if (k == l)  {
+                        arr[i][k] = Math.max(arr[i][k] , arr[i - 1][l]);
+                        continue;
+                    }
+                    arr[i][k] = Math.max(arr[i][k], arr[i - 1][l] + land[i][k]);
+                }
+            }
+        }
+
+        for (int n : arr[land.length - 1])
+            answer = Math.max(answer, n);
+        return answer;
+    }
+}
