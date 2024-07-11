@@ -1,5 +1,45 @@
 https://school.programmers.co.kr/learn/courses/30/lessons/12936
 
+import java.util.*;
+class Solution {
+    ArrayList<Long> list = new ArrayList<>();
+    ArrayList<Long> list2 = new ArrayList<>();
+    public int[] solution(int n, long ky) {
+        long[] valpocket = new long[n];
+        long v = 1;
+        for (int i = 1; i <= n; i++) {
+            v *= i;
+            valpocket[i - 1] = v;
+            list2.add((long)i);
+        }
+
+        for (int i = n; i > 0; i--) {
+            if (i == 1) {
+                list.add(list2.get(0));
+                break;
+            }
+            long val = valpocket[i - 1];
+            long div = valpocket[i - 2];
+            long cnt = val / div;
+            for (long c = 1; c <= cnt; c++) {
+                 if (ky <= c * div) {
+                     ky -= (c - 1) * div;
+                     list.add(list2.get((int)c - 1));
+                     list2.remove((int)c - 1);
+                     break;
+                 }
+            }
+        }
+
+        int[] answer = new int[list.size()];
+        int idx = 0;
+        for (long num : list)
+            answer[idx++] = (int)num;
+        return answer;
+    }
+}
+
+
 // 효율성 실패(time excess)
 import java.util.*;
 class Solution {
