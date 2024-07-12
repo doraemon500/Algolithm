@@ -1,0 +1,112 @@
+https://www.acmicpc.net/problem/1669
+
+
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static StringTokenizer st;
+    //    static List<Character> vowels = Arrays.asList('a', 'e', 'i', 'o', 'u');
+    static long max = 0;
+    static long min = Long.MAX_VALUE;
+    static long n, m;
+    static StringBuilder sb;
+
+    public static void main(String[] args) throws IOException {
+        st = new StringTokenizer(br.readLine());
+        n = Long.parseLong(st.nextToken());
+        m = Long.parseLong(st.nextToken());
+
+        long sub = m - n;
+        long ans = 0;
+        Loop:
+        for (int i = 1; i < Integer.MAX_VALUE; i++) {
+            for (int k = 0; k < 2; k++) {
+                if (sub <= 0)
+                    break Loop;
+                sub -= i;
+                ans++;
+            }
+        }
+        sb = new StringBuilder();
+        sb.append(ans);
+
+        bw.write(sb.toString());
+        bw.close();
+        br.close();
+    }
+}
+
+
+
+// 메모리가 무한하다는 가정 혹은 적당량 이라는 가정하에 가능한 dp 풀이
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static StringTokenizer st;
+
+    static long max = 0;
+    static long min = Long.MAX_VALUE;
+    static long n, m;
+    static StringBuilder sb;
+
+    public static void main(String[] args) throws IOException {
+        st = new StringTokenizer(br.readLine());
+        n = Long.parseLong(st.nextToken());
+        m = Long.parseLong(st.nextToken());
+        if (n == m) {
+            System.out.println(0);
+            return;
+        }
+        // 0 0
+        // 1 1
+        // 2 1
+        // 3 1
+        //
+        int[][] arr = new int[(int) ((int) m - n) + 1][2];
+        for (int i = 0; i < arr.length; i++)
+            Arrays.fill(arr[i], Integer.MAX_VALUE);
+        arr[0][0] = 0;
+        arr[0][1] = 0;
+        arr[1][0] = 1;
+        arr[1][1] = 1;
+        int temp = 0;
+        for (int i = 1; i < arr.length - 1; i++) {
+            int val = arr[i][1];
+            int sum = 0;
+            for (int k = val - 1; k >= 0; k--)
+                sum += k;
+            if (val == Integer.MAX_VALUE) continue;
+            if (i + sum == arr.length - 1) {
+                arr[arr.length - 1][0] = Math.min(arr[arr.length - 1][0], arr[i][0] + val - 1);
+                continue;
+            }
+            if (i + val + sum < arr.length && arr[i + val][0] > arr[i][0] + 1) {
+                    arr[i + val][0] = arr[i][0] + 1;
+                    arr[i + val][1] = val;
+            }
+            if (i + val - 1 + sum - (val - 1) < arr.length && arr[i + val - 1][0] > arr[i][0] + 1) {
+                    arr[i + val - 1][0] = arr[i][0] + 1;
+                    arr[i + val - 1][1] = val - 1;
+            }
+            if (i + val + 1 + sum + val < arr.length && arr[i + val + 1][0] > arr[i][0] + 1) {
+                    arr[i + val + 1][0] = arr[i][0] + 1;
+                    arr[i + val + 1][1] = val + 1;
+            }
+            temp = 1;
+            continue;
+        }
+
+        sb = new StringBuilder();
+        sb.append(arr[arr.length - 1][0]);
+
+        bw.write(sb.toString());
+        bw.close();
+        br.close();
+    }
+}
