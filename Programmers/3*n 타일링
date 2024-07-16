@@ -1,0 +1,24 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/12902#
+
+import java.util.*;
+
+class Solution {
+    public int solution(int n) {
+        int MOD = 1000000007;
+        long[] arr = new long[n + 1];
+
+        try {
+            arr[0] = 1;
+            arr[1] = 0;
+            arr[2] = 3;
+            for (int i = 4; i <= n; i += 2) {
+                arr[i] = arr[i - 2] * arr[2] % MOD;
+                for (int k = i - 4; k >= 0; k -= 2) {
+                    arr[i] = (arr[i] + 2 * arr[k] % MOD) % MOD;
+                }
+            }
+        } catch (Exception e) {
+        }
+        return (int)arr[n] % MOD;
+    }
+}
