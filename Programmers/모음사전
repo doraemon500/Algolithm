@@ -1,0 +1,26 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/84512
+
+import java.util.*;
+
+class Solution {
+    int ans = 0;
+    int answer = Integer.MAX_VALUE;
+    char[] arr = {'A', 'E', 'I', 'O', 'U'};
+    public int solution(String word) {
+        for (char ch : arr)
+            dfs(ch + "", word);
+
+        return answer;
+    }
+
+    void dfs(String str, String word) {
+        if (str.length() >= 6) return;
+        ans++;
+        if (str.equals(word)) {
+            answer = Math.min(answer , ans);
+            return;
+        }
+        for (char ch : arr)
+            dfs(str+ch, word);
+    }
+}
