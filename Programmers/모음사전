@@ -3,7 +3,7 @@ https://school.programmers.co.kr/learn/courses/30/lessons/84512
 import java.util.*;
 
 class Solution {
-    int ans = 0;
+    int cnt = 0;
     int answer = Integer.MAX_VALUE;
     char[] arr = {'A', 'E', 'I', 'O', 'U'};
     public int solution(String word) {
@@ -14,10 +14,10 @@ class Solution {
     }
 
     void dfs(String str, String word) {
-        if (str.length() >= 6) return;
-        ans++;
+        if (str.length() >= 6 || answer != Integer.MAX_VALUE) return;
+        cnt++;
         if (str.equals(word)) {
-            answer = Math.min(answer , ans);
+            answer = cnt;
             return;
         }
         for (char ch : arr)
