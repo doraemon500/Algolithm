@@ -1,0 +1,27 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/132265
+
+import java.util.*;
+
+class Solution {
+    public int solution(int[] topping) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        HashSet<Integer> set = new HashSet<>();
+        for (int n : topping) {
+            map.put(n, map.getOrDefault(n, 0) + 1);
+            set.add(n);
+        }
+
+        int answer = 0;
+        HashSet<Integer> set2 = new HashSet<>();
+
+        for (int n : topping) {
+            map.put(n, map.get(n) - 1);
+            if (map.get(n) == 0)
+                set.remove(n);
+            set2.add(n);
+            if (set.size() == set2.size())
+                answer++;
+        }
+        return answer;
+    }
+}
