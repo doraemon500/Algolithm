@@ -1,0 +1,30 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/131704
+
+import java.util.*;
+
+class Solution {
+    public int solution(int[] order) {
+        Stack<Integer> stack = new Stack<>();
+        int answer = 0;
+        int i = 1;
+        Loop:
+        for (int n : order) {
+            if (!stack.isEmpty() && stack.peek() == n) {
+                stack.pop();
+                answer++;
+                continue;
+            }
+            for (; i <= order.length; i++) {
+                if (n != i) {
+                    if (i > n) break Loop;
+                    stack.push(i);
+                } else {
+                    answer++;
+                    i++;
+                    break;
+                }
+            }
+        }
+        return answer;
+    }
+}
