@@ -1,0 +1,50 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/49994
+
+import java.util.*;
+
+class Solution {
+    public int solution(String dirs) {
+        int[][][][] arr = new int[11][11][11][11];
+        int answer = 0;
+
+        int a = 5, b = 5;
+
+        for (char ch : dirs.toCharArray()) {
+            switch(ch) {
+                case 'U':
+                    if (a + 1 >= 11) break;
+                    if (arr[a][b][a + 1][b] != 1 && arr[a + 1][b][a][b] != 1)
+                        answer++;
+                    arr[a][b][a + 1][b] = 1;
+                    arr[a + 1][b][a][b] = 1;
+                    a++;
+                    break;
+                case 'D':
+                    if (a - 1 < 0) break;
+                    if (arr[a][b][a - 1][b] != 1 && arr[a - 1][b][a][b] != 1)
+                        answer++;
+                    arr[a][b][a - 1][b] = 1;
+                    arr[a - 1][b][a][b] = 1;
+                    a--;
+                    break;
+                case 'R':
+                    if (b + 1 >= 11) break;
+                    if (arr[a][b][a][b + 1] != 1 && arr[a][b + 1][a][b] != 1)
+                        answer++;
+                    arr[a][b][a][b + 1] = 1;
+                    arr[a][b + 1][a][b] = 1;
+                    b++;
+                    break;
+                case 'L':
+                    if (b - 1 < 0) break;
+                    if (arr[a][b][a][b - 1] != 1 && arr[a][b - 1][a][b] != 1)
+                        answer++;
+                    arr[a][b][a][b - 1] = 1;
+                    arr[a][b - 1][a][b] = 1;
+                    b--;
+                    break;
+            }
+        }
+        return answer;
+    }
+}
