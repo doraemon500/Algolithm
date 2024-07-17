@@ -1,0 +1,37 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/87946
+
+import java.util.*;
+
+class Solution {
+    int max = Integer.MIN_VALUE;
+    int[][] dungeons;
+    public int solution(int k, int[][] dungeons) {
+        this.dungeons = dungeons;
+        int[] visited = new int[dungeons.length];
+        for (int i = 0; i < dungeons.length; i++) {
+            dfs(1, k, i, visited);
+            visited[i] = 0;
+        }
+        return max;
+    }
+
+    void dfs(int cnt, int k, int l, int[] visited){
+        if (k >= dungeons[l][0]) {
+            if (k - dungeons[l][1] <= 0 || cnt == visited.length) {
+                max = Math.max(cnt, max);
+                return;
+            }
+            k -= dungeons[l][1];
+        } else {
+            max = Math.max(cnt - 1, max);
+            return;
+        }
+        visited[l] = 1;
+
+        for (int i = 0; i < dungeons.length; i++) {
+            if (visited[i] == 1) continue;
+            dfs(cnt + 1, k, i, visited);
+            visited[i] = 0;
+        }
+    }
+}
