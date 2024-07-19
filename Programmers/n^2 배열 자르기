@@ -1,0 +1,17 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/87390
+
+import java.util.*;
+
+class Solution {
+    public int[] solution(int n, long left, long right) {
+        int[] ans = new int[(int)(right - left) + 1];
+        long k = left;
+        for (int i = 0; i < right - left + 1; i++, k++) {
+            long a = k / n;
+            long b = k % n;
+            long val = Math.max(a + 1, b + 1);
+            ans[i] = (int)val;
+        }
+        return ans;
+    }
+}
