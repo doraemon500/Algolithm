@@ -1,0 +1,32 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/178870
+
+import java.util.*;
+
+class Solution {
+    public int[] solution(int[] sequence, int k) {
+        int left = 0, right = 0, sum = 0;
+        int[] answer = new int[2];
+        answer[1] = Integer.MAX_VALUE - 10;
+        while (left < sequence.length) {
+            if (sum > k || right == sequence.length) {
+                sum -= sequence[left];
+                left++;
+            } else if (sum <= k) {
+                sum += sequence[right];
+                right++;
+            }
+
+            if (sum == k) {
+                int len = right - left;
+                int len2 = answer[1] - answer[0] + 1;
+
+                if (len2 > len) {
+                    answer[1] = right - 1;
+                    answer[0] = left;
+                }
+            }
+        }
+
+        return answer;
+    }
+}
