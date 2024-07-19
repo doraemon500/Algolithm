@@ -1,0 +1,48 @@
+https://www.acmicpc.net/problem/2003
+
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static StringTokenizer st;
+    //    static List<Character> vowels = Arrays.asList('a', 'e', 'i', 'o', 'u');
+    static long max = 0;
+    static long min = Long.MAX_VALUE;
+    static long n, m;
+    static StringBuilder sb;
+
+    public static void main(String[] args) throws IOException {
+        st = new StringTokenizer(br.readLine());
+        n = Long.parseLong(st.nextToken());
+        m = Long.parseLong(st.nextToken());
+        int[] arr = new int[(int) n];
+
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < n; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+
+        int left = 0;
+        int right = 0, sum = 0;
+        int ans = 0;
+
+        while (left < arr.length) {
+            if (sum > m || right == arr.length) {
+                sum -= arr[left++];
+            } else if (sum <= m) {
+                sum += arr[right++];
+            }
+            if (sum == m) {
+                ans++;
+            }
+        }
+
+        sb = new StringBuilder();
+        sb.append(ans);
+        bw.write(sb.toString());
+        bw.close();
+        br.close();
+    }
+}
