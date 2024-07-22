@@ -1,0 +1,64 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/17677#
+
+import java.util.*;
+
+class Solution {
+    public int solution(String str1, String str2) {
+        str1 = str1.toLowerCase();
+        str2 = str2.toLowerCase();
+
+        HashSet<String> set = new HashSet<>();
+        HashSet<String> set2 = new HashSet<>();
+        HashSet<String> set3 = new HashSet<>();
+        HashMap<String, Integer> map = new HashMap<>();
+        HashMap<String, Integer> map2 = new HashMap<>();
+
+        Loop:
+        for (int i = 0; i < str1.length() - 1; i++) {
+            String str = str1.substring(i, i + 2);
+            for (char ch : str.toCharArray())
+                if (ch < 'a' || ch > 'z') continue Loop;
+            map.put(str, map.getOrDefault(str, 0) + 1);
+            set2.add(str);
+            set3.add(str);
+        }
+        Loop:
+        for (int i = 0; i < str2.length() - 1; i++) {
+            String str = str2.substring(i, i + 2);
+            for (char ch : str.toCharArray())
+                if (ch < 'a' || ch > 'z') continue Loop;
+            map2.put(str, map2.getOrDefault(str, 0) + 1);
+            if (set2.contains(str))
+                set.add(str);
+            set3.add(str);
+        }
+
+        double set1size = (double)set.size();
+        double set2size = (double)set3.size();
+
+        if (set2size == 0)
+            return 65536;
+        else if (set1size == 0)
+            return 0;
+
+        for (String str : set) {
+            int a = map.get(str);
+            int b = map2.get(str);
+            System.out.println(str + " " + a + " " + b);
+            int min = Math.min(a, b);
+            int max = Math.max(a, b);
+            set1size += min - 1;
+            set2size += max - 1;
+        }
+        for (String str : set3) {
+            if (set.contains(str)) continue;
+            if (set2.contains(str)) {
+                set2size += map.get(str) - 1;
+                continue;
+            }
+            set2size += map2.get(str) - 1;
+        }
+        double val = set1size / set2size * (double)65536;
+        return (int)val;
+    }
+}
