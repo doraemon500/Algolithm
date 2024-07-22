@@ -1,0 +1,37 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/150369#
+
+import java.util.*;
+
+class Solution {
+    public long solution(int cap, int n, int[] deliveries, int[] pickups) {
+        long answer = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            if (deliveries[i] == 0 && pickups[i] == 0) continue;
+
+            int cnt = 0, cnt2 = 0;
+            for (int k = i; k >= 0; k--) {
+                if (deliveries[k] + cnt > cap) {
+                    deliveries[k] -= cap - cnt;
+                    cnt = cap;
+                } else {
+                    cnt += deliveries[k];
+                    deliveries[k] = 0;
+                }
+                if (cnt == cap) break;
+            }
+            for (int k = i; k >= 0; k--) {
+                if (pickups[k] + cnt2 > cap) {
+                    pickups[k] -= cap - cnt2;
+                    cnt2 = cap;
+                } else {
+                    cnt2 += pickups[k];
+                    pickups[k] = 0;
+                }
+                if (cnt2 == cap) break;
+            }
+            answer += (i + 1) * 2;
+            if (deliveries[i] != 0 || pickups[i] != 0) i++;
+        }
+        return answer;
+    }
+}
