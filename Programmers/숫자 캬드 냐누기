@@ -1,0 +1,48 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/135807
+
+import java.util.*;
+
+class Solution {
+    public int solution(int[] arrayA, int[] arrayB) {
+        int answer = 0;
+        Arrays.sort(arrayA);
+        Arrays.sort(arrayB);
+
+        for (int i = 1; i <= arrayA[0]; i++) {
+            int cnt = 0;
+            for (int n : arrayA) {
+                if (n % i != 0) break;
+                cnt++;
+            }
+            if (cnt == arrayA.length) {
+                cnt = 0;
+                for (int n : arrayB) {
+                    if (n % i == 0) break;
+                    cnt++;
+                }
+                if (cnt == arrayB.length) {
+                    answer = Math.max(i, answer);
+                }
+            }
+        }
+
+        for (int i = 1; i <= arrayB[0]; i++) {
+            int cnt = 0;
+            for (int n : arrayB) {
+                if (n % i != 0) break;
+                cnt++;
+            }
+            if (cnt == arrayB.length) {
+                cnt = 0;
+                for (int n : arrayA) {
+                    if (n % i == 0) break;
+                    cnt++;
+                }
+                if (cnt == arrayA.length) {
+                    answer = Math.max(i, answer);
+                }
+            }
+        }
+        return answer;
+    }
+}
