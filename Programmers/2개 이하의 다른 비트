@@ -1,0 +1,20 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/77885
+
+import java.util.*;
+
+class Solution {
+    public long[] solution(long[] numbers) {
+        long[] answer = new long[numbers.length];
+
+        int idx = 0;
+        for (long num : numbers) {
+             for(long i=1;;i<<=1) if((num&i)==0) {
+                num+=i;
+                num-=(i/2);
+                answer[idx++] = num;
+                break;
+            }
+        }
+        return answer;
+    }
+}
