@@ -1,0 +1,22 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/42883
+
+import java.util.*;
+
+class Solution {
+    public String solution(String number, int k) {
+        StringBuilder sb = new StringBuilder();
+
+        int idx = 0;
+        for (int i = 0; i < number.length() - k; i++) {
+            int max = -1;
+            for (int l = idx; l <= i + k; l++) {
+                if (max < number.charAt(l) - 48) {
+                    max = number.charAt(l) - 48;
+                    idx = l + 1;
+                }
+            }
+            sb.append(max);
+        }
+        return sb.toString();
+    }
+}
