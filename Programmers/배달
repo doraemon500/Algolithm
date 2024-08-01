@@ -1,0 +1,48 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/12978
+
+import java.util.*;
+
+class Solution {
+    int[] arr;
+
+    public int solution(int N, int[][] roads, int K) {
+        int answer = 0;
+        arr = new int[N + 1];
+        int[] visited = new int[N + 1];
+        Arrays.fill(arr , Integer.MAX_VALUE);
+        for (int[] road : roads) {
+            if (road[0] == 1) {
+                dfs(road[1], roads, visited, road[2]);
+                visited[road[0]] = 0;
+            } else if (road[1] == 1) {
+                dfs(road[0], roads, visited, road[2]);
+                visited[road[1]] = 0;
+            }
+        }
+
+        arr[1] = 0;
+        for (int v : arr) {
+            if (v <= K)
+                answer++;
+        }
+
+        return answer;
+    }
+
+    void dfs(int p, int[][] roads, int[] visited, int val) {
+        if (visited[p] == 1) return;
+        else if(arr[p] < val) return;
+        arr[p] = Math.min(arr[p], val);
+        visited[p] = 1;
+
+        for(int[] road : roads) {
+            if (road[0] == p) {
+                dfs(road[1], roads, visited, val + road[2]);
+                visited[road[1]] = 0;
+            } else if (road[1] == p) {
+                dfs(road[0], roads, visited, val + road[2]);
+                visited[road[0]] = 0;
+            }
+        }
+    }
+}
