@@ -1,0 +1,53 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/17683
+
+import java.util.*;
+
+class Solution {
+    public String solution(String m, String[] musicinfos) {
+        String answer = "";
+        int val = Integer.MIN_VALUE;
+        m = Changecode(m);
+
+        for (String info : musicinfos) {
+            String[] arr = info.split(",");
+            String[] a = arr[0].split(":");
+            String[] b = arr[1].split(":");
+            arr[3] = Changecode(arr[3]);
+
+            int min = Integer.parseInt(a[0]) * 60 + Integer.parseInt(a[1]);
+            int max = Integer.parseInt(b[0]) * 60 + Integer.parseInt(b[1]);
+
+            int time = max - min;
+            int cnt = time / arr[3].length();
+            int left = time % arr[3].length();
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < cnt; i++)
+                sb.append(arr[3]);
+            sb.append(arr[3].substring(0,left));
+            if (sb.toString().contains(m)) {
+                if (val < time) {
+                    answer = arr[2];
+                    val = Math.max(val, time);
+                } else if(answer.equals("")) {
+                    answer = arr[2];
+                    val = time;
+                }
+            }
+        }
+        if(answer.equals(""))
+            answer = "(None)";
+        return answer;
+    }
+
+    String Changecode(String m) {
+        m = m.replace("A#", "M");
+        m = m.replace("C#", "N");
+        m = m.replace("D#", "Z");
+        m = m.replace("F#", "L");
+        m = m.replace("G#", "K");
+        m = m.replace("B#", "O");
+
+        return m;
+    }
+}
