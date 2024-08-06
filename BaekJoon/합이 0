@@ -1,0 +1,79 @@
+https://www.acmicpc.net/problem/3151
+
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static StringTokenizer st;
+    //    static List<Character> vowels = Arrays.asList('a', 'e', 'i', 'o', 'u');
+    static long max = 0;
+    static long min = Long.MAX_VALUE;
+    static int N, m;
+    static StringBuilder sb;
+
+    public static void main(String[] args) throws IOException {
+        st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+//        m = Long.parseLong(st.nextToken());
+        st = new StringTokenizer(br.readLine());
+//        int[] arr = new int[(int)n];
+//        ArrayList<Integer> list = new ArrayList<>();
+        int[] arr = new int[N];
+        for (int i = 0; i < N; i++) {
+//            list.add(Integer.parseInt(st.nextToken()));
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+
+//        Collections.sort(list);
+        long ans = 0;
+        Arrays.sort(arr);
+        for (int i = 0; i < N; i++) {
+//            if (list.get(i) > 0) break;
+            if (arr[i] > 0) break;
+            int start = i + 1;
+            int end = N - 1;
+            while (start < end) {
+//                int cur = list.get(i) + list.get(start) + list.get(end);
+                int cur = arr[start] + arr[end] + arr[i];
+                if (cur == 0) {
+                    int s = 1;
+                    int e = 1;
+//                    if (list.get(start) == list.get(end)) {
+                    if (arr[start] == arr[end]) {
+                        int n = end - start + 1;
+                        ans += conv(n);
+                        break;
+                    }
+
+//                    while (list.get(start) == list.get(start + 1)) {
+                    while (arr[start] == arr[start + 1]) {
+                        s++;
+                        start++;
+                    }
+
+//                    while (list.get(end) == list.get(end - 1)) {
+                    while (arr[end] == arr[end - 1]) {
+                        e++;
+                        end--;
+                    }
+                    ans += e * s;
+                }
+                if (cur > 0) end--;
+                else start++;
+            }
+        }
+
+
+        sb = new StringBuilder();
+        sb.append(ans);
+        bw.write(sb.toString());
+        bw.close();
+        br.close();
+    }
+
+    static long conv(int n) {
+        return n * (n - 1) / 2;
+    }
+}
