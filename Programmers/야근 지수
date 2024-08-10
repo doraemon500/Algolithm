@@ -1,0 +1,30 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/12927
+
+import java.util.*;
+
+class Solution {
+    public long solution(int n, int[] works) {
+        long answer = 0;
+        long sum = 0;
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) ->{
+            return b - a;
+        });
+
+        for (int v : works) {
+            sum += v;
+            pq.add(v);
+        }
+        if (sum <= n) return 0;
+
+        for (int i = n; i > 0; i--){
+            int num = pq.poll();
+            num -= 1;
+            pq.add(num);
+        }
+        for (int v : pq) {
+            answer += Math.pow(v, 2);
+        }
+        return answer;
+    }
+}
