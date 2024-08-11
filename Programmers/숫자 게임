@@ -1,0 +1,30 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/12987
+
+import java.util.*;
+
+class Solution {
+    public int solution(int[] A, int[] B) {
+        PriorityQueue<Integer> pq1 = new PriorityQueue<>((a, b) -> {
+            return b - a;
+        });
+        PriorityQueue<Integer> pq2 = new PriorityQueue<>((a, b) -> {
+            return b - a;
+        });
+
+        int answer = 0;
+        for (int n : A)
+            pq1.add(n);
+        for (int n : B)
+            pq2.add(n);
+
+        for (int i = 0; i < A.length; i++) {
+            int n = pq1.poll();
+            if (n >= pq2.peek())
+                continue;
+            int v = pq2.poll();
+            answer++;
+        }
+
+        return answer;
+    }
+}
