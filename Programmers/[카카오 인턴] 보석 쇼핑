@@ -1,0 +1,42 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/67258
+
+import java.util.*;
+
+class Solution {
+    public int[] solution(String[] gems) {
+        HashMap<String, Integer> map = new HashMap<>();
+        HashSet<String> set = new HashSet<>();
+        int[] answer = new int[2];
+
+        for (String str : gems)
+            set.add(str);
+
+        int num = set.size();
+        int left = 0;
+        int right = 0;
+        int cnt = 0;
+        int min = Integer.MAX_VALUE;
+
+        while (left < gems.length) {
+            if (cnt == num || right == gems.length) {
+                map.put(gems[left], map.get(gems[left]) - 1);
+                if (map.get(gems[left]) == 0) {
+                    map.remove(gems[left]);
+                    cnt--;
+                }
+                left++;
+            } else if (cnt < num) {
+                map.put(gems[right], map.getOrDefault(gems[right], 0) + 1);
+                cnt = map.size();
+                right++;
+            }
+
+            if (min > Math.abs(right - left) && cnt == num) {
+                min = Math.abs(right - left);
+                answer[0] = left + 1;
+                answer[1] = right;
+            }
+        }
+        return answer;
+    }
+}
