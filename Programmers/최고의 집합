@@ -1,0 +1,19 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/12938
+
+import java.util.*;
+
+class Solution {
+    public int[] solution(int n, int s) {
+        int[] answer = {-1};
+
+        int val = s / n;
+        if (val == 0) return answer;
+        answer = new int[n];
+        Arrays.fill(answer, val);
+        int left = s % n;
+        for (int i = 0; i < left; i++)
+            answer[i] += 1;
+        Arrays.sort(answer);
+        return answer;
+    }
+}
