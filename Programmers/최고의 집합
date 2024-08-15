@@ -1,5 +1,6 @@
 https://school.programmers.co.kr/learn/courses/30/lessons/12938
 
+// 직관으로 푸는 문제. 요구되는 알고리즘이 따로 없음 (구현이랑은 또 다른 듯)
 import java.util.*;
 
 class Solution {
