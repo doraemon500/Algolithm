@@ -1,0 +1,33 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/12979
+
+import java.util.*;
+
+class Solution {
+    public int solution(int n, int[] stations, int w) {
+        int answer = 0;
+        int k = 2 * w + 1;
+
+        int left = 1;
+        for (int v : stations) {
+            int val = v - w - left;
+            if (val <= 0) {
+                left = v + w + 1;
+                continue;
+            }
+            answer += val / k;
+            if (val % k != 0)
+                answer++;
+            left = v + w + 1;
+        }
+        if (stations[stations.length - 1] != n) {
+            int val = n + 1 - left;
+            if (val > 0) {
+                answer += val / k;
+                if (val % k != 0)
+                    answer++;
+            }
+        }
+
+        return answer;
+    }
+}
