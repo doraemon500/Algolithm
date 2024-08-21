@@ -1,0 +1,152 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/64062
+
+// 슬라이딩 윈도우 + pq + hashset 조합. pq.remove() 대신에 hashset 에 현 윈도우의 요소들을 저장해서 검색 속도를 빠르게 함.
+import java.util.*;
+
+class Solution {
+    public int solution(int[] stones, int k) {
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) -> b[1]-a[1]);
+        HashSet<Integer> set = new HashSet<>();
+        int left = 0;
+        int right = 0;
+        int min = Integer.MAX_VALUE;
+
+        while (left < stones.length - k + 1) {
+            if (right - left >= k || right == stones.length) {
+                int[] arr;
+                while(true) {
+                    arr = pq.poll();
+                    if (!set.contains(arr[0])) continue;
+                    else break;
+                }
+                min = Math.min(min, arr[1]);
+                pq.offer(arr);
+                set.remove(left);
+                left++;
+            } else {
+                int[] arr = {right, stones[right]};
+                pq.offer(arr);
+                set.add(right);
+                right++;
+            }
+        }
+        return min;
+    }
+}
+
+
+// 슬라이딩 윈도우 + pq 사용시에 시간 초과 -> pq.remove() 사용시에 O(n) 이 걸려서 오래 걸림
+import java.util.*;
+
+class Solution {
+    public int solution(int[] stones, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a,b) -> b-a);
+        int left = 0;
+        int right = 0;
+        int min = Integer.MAX_VALUE;
+
+        while (left < stones.length - k + 1) {
+            if (right - left >= k || right == stones.length) {
+                // max = Math.max(max, stones[left]);
+                // min = Math.min(min, max);
+                min = Math.min(min, pq.peek());
+                pq.remove(stones[left]);
+                left++;
+            } else {
+                // max = Math.max(max, stones[right]);
+                pq.offer(stones[right]);
+                right++;
+            }
+        }
+        // min = Math.min(min, max);
+        return min;
+    }
+}
+
+
+
+
+
+
+
+// 정확성 모두 통과, 효율성 시간 초과로 불통과
+import java.util.*;
+
+class Solution {
+    public int solution(int[] stones, int k) {
+        int answer = 0;
+        int[] arr = new int[stones.length];
+
+        Loop:
+        while(true) {
+            int cnt = 0;
+            for (int i = 0; i < arr.length; i++) {
+                if (arr[i] == stones[i]) cnt++;
+                else {
+                    arr[i]++;
+                    if (arr[i] == stones[i]) cnt++;
+                    else cnt = 0;
+                }
+                if (cnt >= k) {
+                    answer++;
+                    break Loop;
+                }
+            }
+            answer++;
+        }
+        return answer;
+    }
+}
+
+
+
+/*
+class Solution {
+    public int solution(int[] stones, int k) {
+        int answer = 0;
+        // PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> {
+        //     return b - a;
+        // });
+        int max = 0;
+        HashMap<Integer, int[]> map = new HashMap<>();
+
+        Loop:
+        while(true) {
+            for (int i = 0; i < stones.length; i++) {
+                if (stones[i] == 0) {
+                    continue;
+                } else
+                    stones[i]--;
+
+                if (stones[i] == 0) {
+                    if (map.keySet().contains(i-1)) {
+                        int[] arr = map.get(i-1);
+                        map.put(i, arr);
+                        arr[0]++;
+                        // pq.offer(arr[0]);
+                        max = Math.max(max, arr[0]);
+                    }
+                    else if (map.keySet().contains(i+1)) {
+                        int[] arr = map.get(i+1);
+                        map.put(i, arr);
+                        arr[0]++;
+                        // pq.offer(arr[0]);
+                        max = Math.max(max, arr[0]);
+                    } else {
+                        map.put(i, new int[1]);
+                        int[] arr = map.get(i);
+                        arr[0]++;
+                        // pq.offer(arr[0]);
+                        max = Math.max(max, arr[0]);
+                    }
+                }
+            }
+            answer++;
+            // int peek = pq.peek();
+            int peek = max;
+            if (peek >= k) break;
+        }
+
+        return answer;
+    }
+}*/
