@@ -1,0 +1,114 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/49189
+
+
+// BFS
+import java.util.*;
+
+class Solution {
+    int[] visited, arr;
+    HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
+    public int solution(int n, int[][] edge) {
+        ArrayList<Integer> list;
+        int num = 0;
+        for (int[] road : edge) {
+            num = Math.max(num, road[0]);
+            num = Math.max(num, road[1]);
+
+            map.put(road[0], map.getOrDefault(road[0], new ArrayList<>()));
+            list = map.get(road[0]);
+            list.add(road[1]);
+
+            map.put(road[1], map.getOrDefault(road[1], new ArrayList<>()));
+            list = map.get(road[1]);
+            list.add(road[0]);
+        }
+        arr = new int[num+1];
+        Arrays.fill(arr, Integer.MAX_VALUE);
+        arr[0] = -1;
+        arr[1] = 1;
+
+        Queue<int[]> q;
+        for (int m : map.get(1)) {
+            visited = new int[num+1];
+            visited[1] = 1;
+            q = new LinkedList<>();
+            q.add(new int[]{m, 1});
+            while(!q.isEmpty()) {
+                int[] v = q.poll();
+                if (visited[v[0]] == 1 || arr[v[0]] <= v[1]) continue;
+                visited[v[0]] = 1;
+                arr[v[0]] = v[1];
+                for (int m2 : map.get(v[0])) {
+                    q.add(new int[]{m2, v[1] + 1});
+                }
+            }
+        }
+
+        int max = 0;
+        int answer = 0;
+        for (int v : arr) {
+            max = Math.max(max, v);
+        }
+        for (int v : arr)
+            if (v == max) answer++;
+        return answer;
+    }
+}
+
+// DFS
+import java.util.*;
+
+class Solution {
+    int[] visited, arr;
+    HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
+    public int solution(int n, int[][] edge) {
+        ArrayList<Integer> list;
+        int num = 0;
+        for (int[] road : edge) {
+            num = Math.max(num, road[0]);
+            num = Math.max(num, road[1]);
+
+            map.put(road[0], map.getOrDefault(road[0], new ArrayList<>()));
+            list = map.get(road[0]);
+            list.add(road[1]);
+
+            map.put(road[1], map.getOrDefault(road[1], new ArrayList<>()));
+            list = map.get(road[1]);
+            list.add(road[0]);
+        }
+        visited = new int[num+1];
+        arr = new int[num+1];
+        Arrays.fill(arr, Integer.MAX_VALUE);
+        arr[0] = -1;
+        arr[1] = 1;
+        visited[1] = 1;
+
+        for (int node : map.get(1)) {
+            dfs(node, 1, num);
+            visited[node] = 0;
+        }
+
+        int max = 0;
+        int answer = 0;
+        for (int v : arr){
+            max = Math.max(v, max);
+        }
+        for (int v : arr)
+            if (v == max)
+                answer++;
+
+        return answer;
+    }
+
+    void dfs(int node, int cnt, int total) {
+        if (cnt == total || visited[node] == 1 || arr[node]<=cnt) return;
+        visited[node] = 1;
+        arr[node] = Math.min(cnt, arr[node]);
+
+        for (int nnode : map.get(node)) {
+            if (visited[nnode] == 1) continue;
+            dfs(nnode, cnt+1, total);
+            visited[nnode] = 0;
+        }
+    }
+}
