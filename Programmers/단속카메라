@@ -1,0 +1,30 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/42884#
+
+import java.util.*;
+
+class Solution {
+    public int solution(int[][] routes) {
+        int answer = 0;
+        Arrays.sort(routes, new Comparator<int[]>(){
+            @Override
+            public int compare(int[] a , int[] b) {
+                if(a[1] == b[1])
+                    return a[0] - b[0];
+                return a[1] - b[1];
+            }
+        });
+
+        int[][] arr = routes;
+        int[] val = {Integer.MIN_VALUE, Integer.MIN_VALUE};
+        int cnt = 0;
+        for(int i = 0; i < arr.length; i++) {
+            if(val[1] < arr[i][0]) {
+                val = arr[i];
+                cnt++;
+                continue;
+            }
+        }
+
+        return cnt;
+    }
+}
