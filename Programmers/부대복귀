@@ -1,0 +1,42 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/132266
+
+import java.util.*;
+
+class Solution {
+    HashMap<Integer, Integer> map = new HashMap<>();
+    public int[] solution(int n, int[][] roads, int[] sources, int destination) {
+        int[] answer = new int[sources.length];
+        List<Integer>[] adj = new ArrayList[n + 1];
+        for (int i = 1; i <= n; i++) {
+            adj[i] = new ArrayList<>();
+        }
+        for (int[] road : roads) {
+            int a = road[0];
+            int b = road[1];
+            adj[a].add(b);
+            adj[b].add(a);
+        }
+
+        for (int source : sources) {
+            map.put(source, map.getOrDefault(source, -1));
+            if (source == destination) map.put(source, 0);
+        }
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{destination, 0});
+        int[] visited = new int[n];
+        while(!q.isEmpty()) {
+            int[] arr = q.poll();
+            if (visited[arr[0] - 1] == 1) continue;
+            map.put(arr[0], arr[1]);
+            visited[arr[0] - 1] = 1;
+            for (int road : adj[arr[0]]) {
+                q.add(new int[]{road, arr[1] + 1});
+            }
+        }
+
+        int idx = 0;
+        for (int key : sources)
+            answer[idx++] = map.get(key);
+        return answer;
+    }
+}
