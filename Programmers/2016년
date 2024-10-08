@@ -1,0 +1,20 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/12901
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+
+class Solution {
+    public String solution(int a, int b) {
+        // 2016년 a월 b일을 LocalDate 객체로 생성
+        LocalDate date = LocalDate.of(2016, a, b);
+
+        // 날짜에 해당하는 요일 구하기 (DayOfWeek는 MONDAY부터 시작)
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+
+        // 요일 이름을 반환하는 배열
+        String[] days = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
+
+        // DayOfWeek는 월요일이 1, 일요일이 7이므로 인덱스를 맞추기 위해 % 7
+        return days[dayOfWeek.getValue() % 7];
+    }
+}
