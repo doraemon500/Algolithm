@@ -1,0 +1,18 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/159994
+
+import java.util.*;
+
+class Solution {
+    public String solution(String[] cards1, String[] cards2, String[] goal) {
+        String ans = "No";
+        int a = 0, b = 0;
+        for (String str : goal) {
+            if (a < cards1.length && str.equals(cards1[a])) {
+                a++;
+            } else if (b < cards2.length && str.equals(cards2[b])) {
+                b++;
+            } else return ans;
+        }
+        return "Yes";
+    }
+}
