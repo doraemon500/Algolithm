@@ -1,0 +1,26 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/176963
+
+mport java.util.*;
+
+class Solution {
+    public int[] solution(String[] name, int[] yearning, String[][] photo) {
+        int[] answer = new int[photo.length];
+
+        int i = 0;
+        for (String[] p : photo) {
+            int val = 0;
+            for (String a : p) {
+                int idx = 0;
+                for (String b : name) {
+                    if (a.equals(b)) {
+                        val += yearning[idx];
+                        break;
+                    }
+                    idx++;
+                }
+            }
+            answer[i++] = val;
+        }
+        return answer;
+    }
+}
