@@ -1,0 +1,24 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/136798
+
+import java.util.*;
+
+class Solution {
+    public int solution(int number, int limit, int power) {
+        int answer = 0;
+        HashMap<Long, Integer> map = new HashMap<>();
+
+        for (int i = 1; i <= number; i++) {
+            for (int k = 1; k <= number; k++) {
+                long num = i * k;
+                if (num > number) break;
+                map.put(num, map.getOrDefault(num, 0)+1);
+            }
+        }
+        for (long key : map.keySet()) {
+            int val = map.get(key);
+            if (val > limit) val = power;
+            answer += val;
+        }
+        return answer;
+    }
+}
