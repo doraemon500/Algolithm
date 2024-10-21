@@ -1,0 +1,21 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/340199
+
+import java.util.*;
+
+class Solution {
+    public int solution(int[] wallet, int[] bill) {
+        int answer = 0;
+
+        int left = bill[0];
+        int right = bill[1];
+
+        while(true) {
+            if (wallet[0] >= left && wallet[1] >= right || wallet[0] >= right && wallet[1] >= left) break;
+            if (left > right) left /= 2;
+            else right /= 2;
+            answer++;
+        }
+
+        return answer;
+    }
+}
