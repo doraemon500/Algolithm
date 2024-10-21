@@ -1,0 +1,55 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/172928?language=java
+
+import java.util.*;
+
+class Solution {
+    public int[] solution(String[] parks, String[] routes) {
+        int[] answer = new int[2];
+
+        int a = 0;
+        int b = 0;
+        Loop:
+        for (int i = 0; i < parks.length; i++) {
+            for (int k = 0; k < parks[0].length(); k++) {
+                if (parks[i].charAt(k) == 'S') {
+                    a = i;
+                    b = k;
+                    break Loop;
+                }
+            }
+        }
+        Loop:
+        for (String route : routes) {
+            String[] s = route.split(" ");
+            int v = Integer.parseInt(s[1]);
+            if (s[0].equals("E")) {
+                for (int i = 1; i <= v; i++) {
+                    if (b + i >= parks[0].length() || parks[a].charAt(b + i) == 'X')
+                        continue Loop;
+                }
+                b += v;
+            } else if (s[0].equals("W")) {
+                for (int i = 1; i <= v; i++) {
+                    if (b - i < 0 || parks[a].charAt(b - i) == 'X')
+                        continue Loop;
+                }
+                b -= v;
+            } else if (s[0].equals("N")) {
+                for (int i = 1; i <= v; i++) {
+                    if (a - i  < 0 || parks[a - i].charAt(b) == 'X')
+                        continue Loop;
+                }
+                a -= v;
+            } else if (s[0].equals("S")) {
+                for (int i = 1; i <= v; i++) {
+                    if (a + i >= parks.length || parks[a + i].charAt(b) == 'X')
+                        continue Loop;
+                }
+                a += v;
+            }
+        }
+        answer[0] = a;
+        answer[1] = b;
+        return answer;
+    }
+}
