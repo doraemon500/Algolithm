@@ -1,0 +1,27 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/12905
+
+import java.util.*;
+
+class Solution
+{
+    public int solution(int [][]board)
+    {
+        int[][] arr = new int[board.length + 1][board[0].length + 1];
+
+        for (int i = 1; i <= board.length; i++) {
+            for (int k = 1; k <= board[0].length; k++) {
+                if (board[i-1][k-1] == 0) continue;
+                arr[i][k] = Math.min(Math.min(arr[i-1][k], arr[i][k-1]), arr[i-1][k-1]) + 1;
+            }
+        }
+
+        int answer = Integer.MIN_VALUE;
+        for (int i = 0; i <= board.length; i++) {
+            for (int k = 0; k <= board[0].length; k++) {
+                answer = Math.max(answer, arr[i][k]);
+            }
+        }
+
+        return answer*answer;
+    }
+}
