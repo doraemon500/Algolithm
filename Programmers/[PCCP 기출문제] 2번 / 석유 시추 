@@ -1,0 +1,59 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/250136
+
+import java.util.*;
+
+class Solution {
+    int max = 0;
+    public int solution(int[][] land) {
+        int answer = 0;
+        HashMap<Integer, Integer> hash = new HashMap<>();
+        int[][] visited = new int[land.length][land[0].length];
+
+        for (int i = 0; i < land.length; i++)
+            for (int k = 0; k < land[0].length; k++)
+                visited[i][k] = land[i][k];
+
+        for(int i = 0; i < land[0].length; i++)
+            hash.put(i, 0);
+
+        for(int i = 0; i < land.length; i++) {
+            for(int l = 0; l < land[0].length; l++) {
+                if (visited[i][l] == 0) continue;
+                max = 0;
+                Set<Integer> set = new HashSet<>();
+                bfs(i, l, visited, set);
+
+                for (int key : set) {
+                    hash.put(key, hash.get(key) + max);
+                }
+            }
+        }
+
+        for(int key : hash.keySet()) {
+            answer = Math.max(answer, hash.get(key));
+        }
+
+        return answer;
+    }
+
+    void bfs(int c, int d, int[][] visited, Set<Integer> set) {
+        Queue<int[]> q = new LinkedList<>();
+        int[] val = {c, d};
+        q.add(val);
+        while(!q.isEmpty()){
+            int[] arr = q.poll();
+            int a = arr[0];
+            int b = arr[1];
+
+            if(a < 0 || b < 0 || a >= visited.length || b >= visited[0].length || visited[a][b] == 0)
+                continue;
+            visited[a][b] = 0;
+            max++;
+            set.add(b);
+            q.add(new int[]{a+1, b});
+            q.add(new int[]{a-1, b});
+            q.add(new int[]{a, b+1});
+            q.add(new int[]{a, b-1});
+        }
+    }
+}
