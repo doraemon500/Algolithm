@@ -1,0 +1,89 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/388353
+
+import java.util.*;
+
+class Solution {
+    public int solution(String[] storage, String[] requests) {
+        int answer = 0;
+        char[][] arr = new char[storage.length][storage[0].length()];
+        int[][] check = new int[storage.length][storage[0].length()];
+
+        for (int i = 0; i < storage.length; i++) {
+            for (int k = 0; k < storage[0].length(); k++) {
+                if (i == 0 || k == 0 || i == storage.length - 1 || k == storage[0].length() - 1)
+                    check[i][k] = 1;
+                arr[i][k] = storage[i].charAt(k);
+            }
+        }
+
+
+        for (String request : requests) {
+            if (request.length() == 1) {
+                check1(arr, check, request);
+            } else {
+                check2(arr, check, request);
+            }
+
+            int[][] visited;
+            for (int i = 0; i < check.length; i++) {
+                visited = new int[check.length][check[0].length];
+                dfs(i, 0, check, visited);
+                visited = new int[check.length][check[0].length];
+                dfs(i, check[0].length - 1, check, visited);
+            }
+            for (int i = 0; i < check[0].length; i++){
+                visited = new int[check.length][check[0].length];
+                dfs(0, i, check, visited);
+                visited = new int[check.length][check[0].length];
+                dfs(check.length - 1, i, check, visited);
+            }
+        }
+
+        for (int i = 0; i < check.length; i++) {
+            for (int k = 0; k < check[0].length; k++) {
+                if (check[i][k] == 0 || check[i][k] == 1)
+                    answer++;
+            }
+        }
+
+        return answer;
+    }
+
+    void check1(char[][] arr, int[][] check, String request) {
+        for (int i = 0; i < check.length; i++) {
+            for (int k = 0; k < check[0].length; k++) {
+                if (request.charAt(0) == arr[i][k] && check[i][k] == 1) {
+                    check[i][k] = 2;
+                }
+            }
+        }
+    }
+
+    void check2(char[][] arr, int[][] check, String request) {
+        for (int i = 0; i < check.length; i++) {
+            for (int k = 0; k < check[0].length; k++) {
+                if (request.charAt(0) == arr[i][k]) {
+                    check[i][k] = 2;
+                }
+            }
+        }
+    }
+
+    void dfs(int a, int b, int[][] check, int[][] visited) {
+        if (a < 0 || b < 0 || a >= check.length || b >= check[0].length)
+            return;
+        if (visited[a][b] == 1) return;
+
+        if (check[a][b] == 1) return;
+        if (check[a][b] == 0) {
+            check[a][b] = 1;
+            return;
+        }
+        visited[a][b] = 1;
+
+        dfs(a-1, b, check, visited);
+        dfs(a+1, b, check, visited);
+        dfs(a, b-1, check, visited);
+        dfs(a, b+1, check, visited);
+    }
+}
