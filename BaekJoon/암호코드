@@ -1,0 +1,59 @@
+https://www.acmicpc.net/problem/2011
+
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static StringTokenizer st;
+    static long max = Long.MIN_VALUE;
+    static long min = Long.MAX_VALUE;
+    static int n, m;
+    static StringBuilder sb;
+    static int idx = 0;
+    static final int MOD = 1000000;
+
+    public static void main(String[] args) throws IOException {
+        String s = br.readLine();
+
+        long[] arr = new long[s.length()];
+
+        try {
+            if (s.charAt(0) - 48 == 0) {
+                System.out.println(0);
+                return;
+            }
+            if (s.charAt(0) - 48 > 0)
+                arr[0] = 1;
+            if (s.charAt(1) - 48 > 0)
+                arr[1] = 1;
+            String str = "" + s.charAt(0) + s.charAt(1);
+            int val = Integer.parseInt(str);
+            if (val <= 26) {
+                arr[1] += 1;
+            }
+            arr[1] %= MOD;
+
+            for (int i = 2; i < s.length(); i++) {
+                String n = "" + s.charAt(i - 1) + s.charAt(i);
+                if (n.equals("00")) {
+                    System.out.println(0);
+                    return;
+                }
+                int num = Integer.parseInt(n);
+                if (s.charAt(i) - 48 > 0)
+                    arr[i] = arr[i - 1] % MOD;
+                if (num <= 26 && num >= 10) {
+                    arr[i] = (arr[i] + arr[i - 2]) % MOD;
+                }
+            }
+        } catch (Exception e) {
+        }
+
+        System.out.println(arr[arr.length-1] % MOD);
+//        bw.write(sb.toString());
+//        bw.close();
+//        br.close();
+    }
+}
