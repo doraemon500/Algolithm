@@ -1,5 +1,8 @@
 https://www.acmicpc.net/problem/2631
 
+// 올바르게 서 있는 아이들은 옮기지 않아도 된다는 아이디어에서 출발
+// N-lis 로 제대로 증가하는 최대 순열을 찾아서 해당 순열의 길이를 구하고 전체 길이에서 빼서 옮겨야하는 아이들의 최댓값 도출
+
 import java.util.*;
 import java.io.*;
 
