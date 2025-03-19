@@ -1,0 +1,57 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/388352
+
+import java.util.*;
+
+class Solution {
+    ArrayList<HashSet<Integer>> list = new ArrayList<>();
+    int answer = 0;
+
+    public int solution(int n, int[][] qs, int[] ans) {
+
+        for (int[] q : qs) {
+            HashSet<Integer> set = new HashSet<>();
+            for (int num : q)
+                set.add(num);
+            list.add(set);
+        }
+
+        int[] visited = new int[n+1];
+        for (int i = 1; i <= n; i++) {
+            int[] arr = new int[qs[0].length];
+            arr[0] = i;
+            visited[i] = 1;
+            dfs(0, arr, visited, qs, ans, n);
+            visited[i] = 0;
+        }
+
+        int div = 1;
+        for (int i = 1; i <= qs[0].length; i++)
+            div *= i;
+        return answer / div;
+    }
+
+    void dfs(int idx, int[] arr, int[] visited, int[][] qs, int[] ans, int n) {
+        if (idx == qs[0].length - 1) {
+            int i = 0;
+            for (HashSet<Integer> set : list) {
+                int cnt = 0;
+                for (int num : arr) {
+                    if (set.contains(num))
+                        cnt++;
+                }
+                if (ans[i++] != cnt)
+                    return;
+            }
+            answer++;
+            return;
+        }
+
+        for (int i = 1; i <= n; i++) {
+            if (visited[i] == 1) continue;
+            arr[idx + 1] = i;
+            visited[i] = 1;
+            dfs(idx + 1, arr, visited, qs, ans, n);
+            visited[i] = 0;
+        }
+    }
+}
