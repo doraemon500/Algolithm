@@ -1,0 +1,35 @@
+https://www.acmicpc.net/problem/2156
+
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static StringTokenizer st;
+    static long max = Long.MIN_VALUE;
+    static long min = Long.MAX_VALUE;
+    static int n, m;
+    static StringBuilder sb;
+    static int idx = 0;
+    static final int MOD = 1000000;
+
+    public static void main(String[] args) throws IOException {
+        n = Integer.parseInt(br.readLine());
+        int[] arr = new int[n+1];
+        int[] dp = new int[n+1];
+        for (int i = 1; i <= n; i++) {
+            arr[i] = Integer.parseInt(br.readLine());
+            dp[i] = arr[i];
+        }
+        try {
+            dp[1] = arr[1];
+            dp[2] = arr[2] + arr[1];
+
+            for (int i = 3; i <= n; i++) {
+                dp[i] = Math.max(dp[i - 1], arr[i] + Math.max(dp[i - 3] + arr[i - 1], dp[i - 2]));
+            }
+        } catch (Exception e) {}
+        System.out.println(dp[n]);
+    }
+}
