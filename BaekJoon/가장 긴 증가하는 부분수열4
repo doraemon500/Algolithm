@@ -1,0 +1,57 @@
+https://www.acmicpc.net/problem/14002
+
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static StringTokenizer st;
+    static long max = Long.MIN_VALUE;
+    static long min = Long.MAX_VALUE;
+    static int n, m;
+    static StringBuilder sb;
+    static int idx = 0;
+    static final int MOD = 1000000;
+
+    public static void main(String[] args) throws IOException {
+        n = Integer.parseInt(br.readLine());
+        int[] arr = new int[n];
+        int[] ans = new int[n];
+        String[] sarr = new String[n];
+
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < n; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
+            sarr[i] = arr[i] + "";
+        }
+
+        if (n == 1) {
+            System.out.println(1);
+            System.out.println(arr[0]);
+            return;
+        }
+
+        Arrays.fill(ans, 1);
+
+        int pumax = Integer.MIN_VALUE;
+        int idx = -1;
+        for (int i = 1; i < n; i++) {
+            int max = 0;
+            for (int k = 0; k < i; k++) {
+                if (arr[i] > arr[k] && max < ans[k]) {
+                    max = ans[k];
+                    sarr[i] = sarr[k] + " " + arr[i];
+                }
+            }
+            ans[i] = max + 1;
+            if (ans[i] > pumax) {
+                pumax = ans[i];
+                idx = i;
+            }
+        }
+
+        System.out.println(ans[idx]);
+        System.out.println(sarr[idx]);
+    }
+}
