@@ -1,0 +1,49 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/17686#
+
+import java.util.*;
+
+class Solution {
+    public String[] solution(String[] files) {
+        Arrays.sort(files, (a, b) -> {
+            a = a.toLowerCase();
+            b = b.toLowerCase();
+            int[] aa = parsing(a);
+            int[] ba = parsing(b);
+
+            String ahead = a.substring(0, aa[0] + 1);
+            String bhead = b.substring(0, ba[0] + 1);
+
+            if (aa[1] - aa[0] > 5)
+                aa[1] = aa[0] + 5;
+            if (ba[1] - ba[0] > 5)
+                ba[1] = ba[0] + 5;
+            String anumStr = a.substring(aa[0] + 1, aa[1] + 1);
+            String bnumStr = b.substring(ba[0] + 1, ba[1] + 1);
+            int anum = Integer.parseInt(anumStr);
+            int bnum = Integer.parseInt(bnumStr);
+
+            if (!ahead.equals(bhead))
+                return ahead.compareTo(bhead);
+            else
+                return anum - bnum;
+        });
+
+        return files;
+    }
+
+    int[] parsing(String str) {
+        int headE = -1;
+        int numE = -1;
+        int tail = -1;
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            if (!(ch >= '0' && ch <= '9') && numE == -1) {
+                headE = Math.max(headE, i);
+            } else if (ch >= '0' && ch <= '9' && tail == -1) {
+                numE = Math.max(numE, i);
+            } else if (!(ch >= '0' && ch <= '9'))
+                tail = 1;
+        }
+        return new int[]{headE, numE};
+    }
+}
