@@ -1,0 +1,84 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/42890
+
+import java.util.*;
+
+class Solution {
+    HashSet<String> keys = new HashSet<>();
+
+    public int solution(String[][] relation) {
+        int[] visited = new int[relation[0].length];
+        for (int i = 0; i < relation[0].length; i++) {
+            dfs(i, 0, visited, relation);
+            visited[i] = 0;
+        }
+
+        HashSet<String> ansKey = new HashSet<>();
+
+        List<String> sortedKeys = new ArrayList<>(keys);
+        Collections.sort(sortedKeys, (a, b) ->
+            Integer.compare(a.split(" ").length, b.split(" ").length));
+
+        for (String currentKey : sortedKeys) {
+            boolean isMinimal = true;
+
+            for (String existingKey : ansKey) {
+                if (isSubset(existingKey, currentKey)) {
+                    isMinimal = false;
+                    break;
+                }
+            }
+
+            if (isMinimal) {
+                ansKey.add(currentKey);
+            }
+        }
+
+        return ansKey.size();
+    }
+
+    private boolean isSubset(String subsetKey, String mainKey) {
+        Set<String> subset = new HashSet<>(Arrays.asList(subsetKey.split(" ")));
+        Set<String> main = new HashSet<>(Arrays.asList(mainKey.split(" ")));
+        return main.containsAll(subset);
+    }
+
+    void dfs(int idx, int cnt, int[] visited, String[][] relation) {
+        visited[idx] = 1;
+
+        HashSet<String> set = new HashSet<>();
+
+        int sig = -1;
+        for (int i = 0; i < relation.length; i++) {
+            String str = "";
+            for (int k = 0; k < relation[0].length; k++) {
+                if (visited[k] == 0) continue;
+                str += relation[i][k] + " ";
+            }
+            if (set.contains(str)) {
+                sig = 0;
+                break;
+            }
+            else
+                set.add(str);
+        }
+
+        if (sig == -1) {
+            String str = "";
+            for (int k = 0; k < relation[0].length; k++) {
+               if (visited[k] == 1)
+                   str += k + " ";
+            }
+
+            keys.add(str);
+        }
+
+        if (cnt == visited.length) return;
+
+        for (int i = idx + 1; i < relation[0].length; i++) {
+            if (visited[i] == 1)
+                continue;
+            dfs(i, cnt + 1, visited, relation);
+            visited[i] = 0;
+        }
+    }
+}
