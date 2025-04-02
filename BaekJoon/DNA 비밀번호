@@ -1,0 +1,61 @@
+https://www.acmicpc.net/problem/12891
+
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static StringTokenizer st;
+    static long max = Long.MIN_VALUE;
+    static long min = Long.MAX_VALUE;
+    static int n, m;
+    static StringBuilder sb;
+    static int idx = 0;
+    static final int MOD = 1000000;
+
+    public static void main(String[] args) throws IOException {
+        st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+
+        String str = br.readLine();
+
+        st = new StringTokenizer(br.readLine());
+        int a = Integer.parseInt(st.nextToken());
+        int c = Integer.parseInt(st.nextToken());
+        int g = Integer.parseInt(st.nextToken());
+        int t = Integer.parseInt(st.nextToken());
+
+        int a2 = 0;
+        int c2 = 0;
+        int g2 = 0;
+        int t2 = 0;
+
+        int ans = 0;
+
+        for (int i = 0; i < m; i++) {
+            if (str.charAt(i) == 'A') a2++;
+            if (str.charAt(i) == 'T') t2++;
+            if (str.charAt(i) == 'G') g2++;
+            if (str.charAt(i) == 'C') c2++;
+        }
+        if (a2 >= a && c2 >= c && g2 >= g && t2 >= t) ans++;
+
+        for (int i = m; i < n; i++) {
+            if (str.charAt(i-m) == 'A') a2--;
+            if (str.charAt(i-m) == 'T') t2--;
+            if (str.charAt(i-m) == 'G') g2--;
+            if (str.charAt(i-m) == 'C') c2--;
+
+            if (str.charAt(i) == 'A') a2++;
+            if (str.charAt(i) == 'T') t2++;
+            if (str.charAt(i) == 'G') g2++;
+            if (str.charAt(i) == 'C') c2++;
+
+            if (a2 >= a && c2 >= c && g2 >= g && t2 >= t) ans++;
+        }
+
+        System.out.println(ans);
+    }
+}
