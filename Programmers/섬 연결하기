@@ -1,0 +1,32 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/42861
+
+import java.util.*;
+
+class Solution {
+    public int solution(int n, int[][] costs) {
+        List<List<int[]>> graph = new ArrayList<>();
+        for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
+        for (int[] cost : costs) {
+            int u = cost[0], v = cost[1], w = cost[2];
+            graph.get(u).add(new int[]{v, w});
+            graph.get(v).add(new int[]{u, w});
+        }
+        boolean[] visited = new boolean[n];
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
+        visited[0] = true;
+        for (int[] edge : graph.get(0)) pq.add(edge);
+        int answer = 0, count = 1;
+        while (!pq.isEmpty() && count < n) {
+            int[] cur = pq.poll();
+            int node = cur[0], weight = cur[1];
+            if (visited[node]) continue;
+            visited[node] = true;
+            answer += weight;
+            count++;
+            for (int[] edge : graph.get(node)) {
+                if (!visited[edge[0]]) pq.add(edge);
+            }
+        }
+        return answer;
+    }
+}
