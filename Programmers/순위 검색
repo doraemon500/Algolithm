@@ -1,0 +1,133 @@
+import java.util.*;
+
+class Solution {
+    public int[] solution(String[] infos, String[] querys) {
+        Map<String, List<Integer>> map = new HashMap<>();
+
+        for (String info : infos) {
+            String[] parts = info.split(" ");
+            String language = parts[0];
+            String job = parts[1];
+            String career = parts[2];
+            String food = parts[3];
+            int score = Integer.parseInt(parts[4]);
+
+            String[] langs = { language, "-" };
+            String[] jobs = { job, "-" };
+            String[] careers = { career, "-" };
+            String[] foods = { food, "-" };
+
+            for (String l : langs) {
+                for (String j : jobs) {
+                    for (String c : careers) {
+                        for (String f : foods) {
+                            String key = l + " " + j + " " + c + " " + f;
+                            map.computeIfAbsent(key, k -> new ArrayList<>()).add(score);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (List<Integer> list : map.values()) {
+            Collections.sort(list);
+        }
+
+        int[] answer = new int[querys.length];
+        int idx = 0;
+
+        for (String query : querys) {
+            query = query.replace(" and", "");
+            String[] q_arr = query.split(" ");
+            String key = q_arr[0] + " " + q_arr[1] + " " + q_arr[2] + " " + q_arr[3];
+            int q_cost = Integer.parseInt(q_arr[4]);
+
+            List<Integer> list = map.getOrDefault(key, new ArrayList<>());
+
+            int left = 0;
+            int right = list.size() - 1;
+            int pos = list.size();
+            while (left <= right) {
+                int mid = (left + right) / 2;
+                int cost = list.get(mid);
+                if (cost >= q_cost) {
+                    pos = mid;
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            }
+
+            answer[idx++] = list.size() - pos;
+        }
+
+        return answer;
+    }
+}
+
+import java.util.*;
+
+class Solution {
+    public int[] solution(String[] infos, String[] querys) {
+        Map<String, List<Integer>> map = new HashMap<>();
+
+        for (String info : infos) {
+            String[] parts = info.split(" ");
+            String language = parts[0];
+            String job = parts[1];
+            String career = parts[2];
+            String food = parts[3];
+            int score = Integer.parseInt(parts[4]);
+
+            String[] langs = { language, "-" };
+            String[] jobs = { job, "-" };
+            String[] careers = { career, "-" };
+            String[] foods = { food, "-" };
+
+            for (String l : langs) {
+                for (String j : jobs) {
+                    for (String c : careers) {
+                        for (String f : foods) {
+                            String key = l + " " + j + " " + c + " " + f;
+                            map.computeIfAbsent(key, k -> new ArrayList<>()).add(score);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (List<Integer> list : map.values()) {
+            Collections.sort(list);
+        }
+
+        int[] answer = new int[querys.length];
+        int idx = 0;
+
+        for (String query : querys) {
+            query = query.replace(" and", "");
+            String[] q_arr = query.split(" ");
+            String key = q_arr[0] + " " + q_arr[1] + " " + q_arr[2] + " " + q_arr[3];
+            int q_cost = Integer.parseInt(q_arr[4]);
+
+            List<Integer> list = map.getOrDefault(key, new ArrayList<>());
+
+            int left = 0;
+            int right = list.size() - 1;
+            int pos = list.size();
+            while (left <= right) {
+                int mid = (left + right) / 2;
+                int cost = list.get(mid);
+                if (cost >= q_cost) {
+                    pos = mid;
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            }
+
+            answer[idx++] = list.size() - pos;
+        }
+
+        return answer;
+    }
+}
