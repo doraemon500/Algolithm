@@ -1,0 +1,42 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/92344
+
+import java.util.*;
+
+class Solution {
+    public int solution(int[][] board, int[][] skills) {
+        int[][] dp = new int[board.length+1][board[0].length+1];
+
+        for (int[] skill : skills) {
+            int r1 = skill[1];
+            int c1 = skill[2];
+            int r2 = skill[3];
+            int c2 = skill[4];
+
+            dp[r1][c1] += (skill[0] == 1 ? -1 : 1) * skill[5];
+            dp[r1][c2+1] += (skill[0] == 1 ? 1 : -1) * skill[5];
+            dp[r2+1][c1] += (skill[0] == 1 ? 1 : -1) * skill[5];
+            dp[r2+1][c2+1] += (skill[0] == 1 ? -1 : 1) * skill[5];
+        }
+
+        for (int i = 1; i <= board[0].length; i++) {
+            for (int k = 0; k <= board.length; k++) {
+                dp[k][i] += dp[k][i-1];
+            }
+        }
+
+        for (int i = 1; i <= board.length; i++) {
+            for (int k = 0; k <= board[0].length; k++) {
+                dp[i][k] += dp[i-1][k];
+            }
+        }
+
+        int answer = 0;
+        for (int i = 0; i < board.length; i++) {
+            for (int k = 0; k < board[0].length; k++) {
+                int val = board[i][k] + dp[i][k];
+                if (val > 0) answer++;
+            }
+        }
+        return answer;
+    }
+}
