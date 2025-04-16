@@ -1,0 +1,56 @@
+https://www.acmicpc.net/problem/20437
+
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(br.readLine());
+        StringBuilder sb = new StringBuilder();
+
+        for (int t = 0; t < T; t++) {
+            String W = br.readLine();
+            int K = Integer.parseInt(br.readLine());
+
+            ArrayList<Integer>[] indices = new ArrayList[26];
+            for (int i = 0; i < 26; i++) {
+                indices[i] = new ArrayList<>();
+            }
+
+            for (int i = 0; i < W.length(); i++) {
+                char c = W.charAt(i);
+                indices[c - 'a'].add(i);
+            }
+
+            int minLen = Integer.MAX_VALUE;
+            int maxLen = -1;
+
+            for (int i = 0; i < 26; i++) {
+                if (indices[i].size() < K)
+                    continue;
+
+                for (int j = 0; j + K - 1 < indices[i].size(); j++) {
+                    int start = indices[i].get(j);
+                    int end = indices[i].get(j + K - 1);
+                    int curLen = end - start + 1;
+
+                    if (curLen < minLen) {
+                        minLen = curLen;
+                    }
+                    if (curLen > maxLen) {
+                        maxLen = curLen;
+                    }
+                }
+            }
+
+            if (minLen == Integer.MAX_VALUE || maxLen == -1) {
+                sb.append(-1).append("\n");
+            } else {
+                sb.append(minLen).append(" ").append(maxLen).append("\n");
+            }
+        }
+
+        System.out.print(sb.toString());
+    }
+}
