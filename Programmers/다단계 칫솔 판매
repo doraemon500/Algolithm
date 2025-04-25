@@ -1,0 +1,38 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/77486?language=java
+
+import java.util.*;
+
+class Solution {
+    public int[] solution(String[] enroll, String[] referral, String[] sellers, int[] amounts) {
+        int[] answer = new int[enroll.length];
+        HashMap<String, LinkedList<String>> map = new HashMap<>();
+
+        for (int i = 0; i < enroll.length; i++) {
+            map.put(enroll[i], map.getOrDefault(enroll[i], new LinkedList<String>()));
+            map.get(enroll[i]).add(referral[i]);
+            map.get(enroll[i]).add(String.valueOf(i));
+        }
+
+        for (int i = 0; i < sellers.length; i++) {
+            dfs(sellers[i], map, amounts[i]*100, answer);
+        }
+
+        return answer;
+    }
+
+    void dfs(String seller, HashMap<String, LinkedList<String>> map, int amount, int[] answer) {
+        String referral = map.get(seller).get(0);
+        int idx = Integer.parseInt(map.get(seller).get(1));
+
+        if (amount * 10 / 100 < 1) {
+            answer[idx] += amount;
+            if (referral.equals("-")) return;
+        }
+        else {
+            answer[idx] += amount - (amount * 10 / 100);
+            if (referral.equals("-")) return;
+            dfs(referral, map, amount * 10 / 100, answer);
+        }
+
+    }
+}
