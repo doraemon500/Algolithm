@@ -1,0 +1,38 @@
+https://school.programmers.co.kr/learn/courses/30/lessons/12904#
+
+import java.util.*;
+
+class Solution
+{
+    public int solution(String s)
+    {
+        int answer = 1;
+
+        for (int i = 0; i < s.length(); i++) {
+            if (i + 1 == s.length()) continue;
+            if (s.charAt(i) == s.charAt(i+1)) {
+                for (int k = 0; k <= i; k++) {
+                    try {
+                        if (s.charAt(i - k) == s.charAt(i + 1 + k)) {
+                            answer = Math.max(answer, k*2+2);
+                        } else break;
+                    } catch(Exception e) {
+                        break;
+                    }
+                }
+            }
+            for (int k = 0; k <= i; k++) {
+                try {
+                    if (s.charAt(i-k) == s.charAt(i+k))
+                        answer = Math.max(answer, k*2+1);
+                    else
+                        break;
+                } catch(Exception e){
+                    break;
+                }
+            }
+        }
+
+        return answer;
+    }
+}
